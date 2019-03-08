@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "80333403072",
+    "firebase_url": "https://smartplug-7b068.firebaseio.com",
+    "project_id": "smartplug-7b068",
+    "storage_bucket": "smartplug-7b068.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:80333403072:android:18e43ac20247d421",
+        "android_client_info": {
+          "package_name": "smartplug.smartplug"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "80333403072-9d91me9dkirnqe9nk0guj3laa81ksj3h.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "smartplug.smartplug",
+            "certificate_hash": "09f69afbeb4d8d13b64a4138eb79cddd1d887b06"
+          }
+        },
+        {
+          "client_id": "80333403072-6g91ecoqcsqdjcq499h6knj787u9b7oa.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyD8bZnrBzzZ5eypR2hqVDn7kDY7nfkeh0M"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "80333403072-6g91ecoqcsqdjcq499h6knj787u9b7oa.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

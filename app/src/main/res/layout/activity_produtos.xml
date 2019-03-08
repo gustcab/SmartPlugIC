@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".Activity.ProdutosActivity"
+    android:background="@drawable/fundo_roxo_logos2">
+
+    <Button
+        android:id="@+id/btnVoltarTelaInicial2"
+        android:background="@drawable/buttonstyleselector"
+        android:textSize="17sp"
+        android:text="VOLTAR TELA INICIAL"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
+    <ListView
+        android:layout_marginTop="20dp"
+        android:id="@+id/listViewConectados"
+        android:background="@drawable/edittextstyle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+    </ListView>
+
+</LinearLayout>

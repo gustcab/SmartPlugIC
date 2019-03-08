@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:showIn="navigation_view">
+
+    <group android:checkableBehavior="single">
+        <item android:title="Detalhes">
+        <menu>
+        <item
+            android:id="@+id/nav_condiguracao"
+            android:icon="@drawable/ic_menu_manage"
+            android:title="Configurações" />
+        <item
+            android:id="@+id/nav_sobre"
+            android:icon="@drawable/ic_menu_gallery"
+            android:title="Sobre o Projeto" />
+          </menu>
+        </item>
+    </group>
+
+    <item android:title="Redes">
+        <menu>
+            <item
+                android:id="@+id/nav_compartilhar"
+                android:icon="@drawable/ic_menu_share"
+                android:title="Compartilhar" />
+
+            <item
+                android:id="@+id/nav_Logar"
+                android:icon="@drawable/ic_logar"
+                android:title="Logar" />
+
+        </menu>
+    </item>
+
+</menu>

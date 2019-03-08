@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".Activity.CadastroActivity"
+    android:background="@drawable/fundo_roxo_logos">
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <LinearLayout
+            android:layout_marginTop="20dp"
+            android:layout_width="match_parent"
+            android:orientation="vertical"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:text="@string/cadastro"
+                android:textSize="20sp"
+                android:textStyle="bold"
+                android:textColor="#fff"
+                android:layout_gravity="center"
+                android:gravity="center"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" />
+
+            <EditText
+                android:id="@+id/edtCadNome"
+                android:layout_marginTop="10dp"
+                android:textColor="#000000"
+                android:textColorHint="#000000"
+                android:background="@drawable/edittextstyle"
+                android:layout_width="match_parent"
+                android:hint="@string/nome"
+                android:inputType="textCapCharacters"
+                android:layout_height="60dp" />
+
+            <EditText
+                android:id="@+id/edtCadSobrenome"
+                android:textColor="#000000"
+                android:textColorHint="#000000"
+                android:background="@drawable/edittextstyle"
+                android:layout_width="match_parent"
+                android:hint="@string/sobrenome"
+                android:inputType="textCapCharacters"
+                android:layout_height="60dp" />
+
+            <EditText
+                android:id="@+id/edtCadEmail"
+                android:textColor="#000000"
+                android:textColorHint="#000000"
+                android:background="@drawable/edittextstyle"
+                android:layout_width="match_parent"
+                android:hint="@string/e_mail"
+                android:inputType="textEmailAddress"
+                android:layout_height="60dp" />
+
+            <EditText
+                android:id="@+id/edtCadSenha"
+                android:textColor="#000000"
+                android:textColorHint="#000000"
+                android:background="@drawable/edittextstyle"
+                android:layout_width="match_parent"
+                android:hint="@string/senha"
+                android:inputType="textPassword"
+                android:layout_height="60dp" />
+
+            <EditText
+                android:id="@+id/edtCadConfirmaSenha"
+                android:textColor="#000000"
+                android:textColorHint="#000000"
+                android:background="@drawable/edittextstyle"
+                android:layout_width="match_parent"
+                android:hint="@string/confirmar_senha"
+                android:inputType="textPassword"
+                android:layout_height="60dp"/>
+            
+            <Button
+                android:layout_marginTop="30dp"
+                android:textColor="#fff"
+                android:background="@drawable/buttonstyleselector"
+                android:layout_width="match_parent"
+                android:id="@+id/btnGravar"
+                android:text="@string/gravar"
+                android:layout_height="50dp" />
+
+        
+        </LinearLayout>
+
+
+    </ScrollView>
+
+
+
+
+
+</LinearLayout>
