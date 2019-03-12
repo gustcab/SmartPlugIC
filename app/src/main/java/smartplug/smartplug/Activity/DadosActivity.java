@@ -82,7 +82,6 @@ public class DadosActivity extends AppCompatActivity
         potencia = (TextView) findViewById(R.id.txtPotencia);
 
 
-
         @SuppressLint("WrongViewCast") final GraphView graph = (GraphView) findViewById(R.id.grafico_dados);
         //data
         series = new LineGraphSeries<DataPoint>();
@@ -95,7 +94,7 @@ public class DadosActivity extends AppCompatActivity
         final Viewport viewport = graph.getViewport();
         viewport.setYAxisBoundsManual(true);
         viewport.setMinY(0);
-        viewport.setMaxY(2000);
+        viewport.setMaxY(500);
         viewport.setScrollable(true);
 
         ampliar = (FloatingActionButton) findViewById(R.id.ampliar_grafico);
@@ -151,7 +150,7 @@ public class DadosActivity extends AppCompatActivity
                 corre = false;
 
                 graph.setTitle("Potência Elétrica(W)");
-              //  viewport.setMaxY(2000);
+               // viewport.setMaxY(2000);
             }
         });
     }

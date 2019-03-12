@@ -71,7 +71,7 @@ public class HomeActivity extends AppCompatActivity
         guest = findViewById(R.id.txtguest_home);
 
         getStatus();
-        validaPower();
+       // validaPower();
 
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -90,7 +90,6 @@ public class HomeActivity extends AppCompatActivity
 
         guest.setText(mDatabase.toString());*/
 
-       // validaPower();
 
         imgAddAparelho.setOnClickListener(new View.OnClickListener() {
             @Override

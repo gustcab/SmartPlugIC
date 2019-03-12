@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -21,9 +22,12 @@ import com.google.firebase.database.ValueEventListener;
 import java.util.ArrayList;
 
 import smartplug.smartplug.Adapter.ProdutosAdapter;
+import smartplug.smartplug.DAO.ConexaoDispositivo;
 import smartplug.smartplug.DAO.ConfiguracaoFirebase;
 import smartplug.smartplug.R;
 import smartplug.smartplug.entidades.Produtos;
+
+import static android.support.constraint.Constraints.TAG;
 
 public class ProdutosActivity extends AppCompatActivity {
 
@@ -32,9 +36,10 @@ public class ProdutosActivity extends AppCompatActivity {
     private ArrayList<Produtos> produtos;
     private DatabaseReference firebase;
     private ValueEventListener valueEventListenerProdutos;
-    private Button btnVoltarTelaInicial;
     private AlertDialog alerta;
-    private Produtos excluiAparelho;
+    private Produtos excluiAparelho,alteraStatus;
+    private DatabaseReference statusDispositivo;
+    private String status = "";
 
 
     @Override
@@ -73,22 +78,12 @@ public class ProdutosActivity extends AppCompatActivity {
            }
        };
 
-       btnVoltarTelaInicial = (Button) findViewById(R.id.btnVoltarTelaInicial2);
-       btnVoltarTelaInicial.setOnClickListener(new View.OnClickListener() {
-           @Override
-           public void onClick(View v) {
-               voltarTelaInicial();
-
-           }
-       });
-
-
        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
            @Override
            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 
 
-               excluiAparelho = adapter.getItem(position);
+              alteraStatus = adapter.getItem(position);
 
                //cria o gerador do Alert Dialog
 
@@ -101,15 +96,23 @@ public class ProdutosActivity extends AppCompatActivity {
                builder.setMessage("Selecione a ação desejada");
 
                //define botão sim
-               builder.setPositiveButton("Excluir Aparelho", new DialogInterface.OnClickListener() {
+               builder.setPositiveButton("Alterar Status do aparelho", new DialogInterface.OnClickListener() {
                    @Override
                    public void onClick(DialogInterface dialog, int which) {
 
                        firebase = ConfiguracaoFirebase.getFirebase().child("addaparelho");
 
-                       firebase.child(excluiAparelho.getNome()).removeValue();
+                       if(getStatus()) {
+                           firebase.child(alteraStatus.getNome()).child("status").setValue("Desativado");
+                           Toast.makeText(ProdutosActivity.this,"Aparelho Desativado!", Toast.LENGTH_LONG).show();
 
-                       Toast.makeText(ProdutosActivity.this,"Exclusao efetuada!", Toast.LENGTH_LONG).show();
+                       }else
+                       {
+                           firebase.child(alteraStatus.getNome()).child("status").setValue("Ativado");
+                           Toast.makeText(ProdutosActivity.this,"Aparelho Ativado!", Toast.LENGTH_LONG).show();
+                       }
+
+                       Toast.makeText(ProdutosActivity.this,"Alteração efetuada!", Toast.LENGTH_LONG).show();
 
                    }
                });
@@ -128,6 +131,27 @@ public class ProdutosActivity extends AppCompatActivity {
                //exibe alertdialog
                alerta.show();
            }
+
+           private boolean getStatus(){
+
+               statusDispositivo = ConexaoDispositivo.PegaDados(alteraStatus.getNome(),"status");
+               statusDispositivo.addValueEventListener(new ValueEventListener() {
+                   @Override
+                   public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+
+                       status = dataSnapshot.getValue(String.class);
+
+                   }
+
+                   @Override
+                   public void onCancelled(@NonNull DatabaseError databaseError) {
+                       Log.w(TAG, "onCancelled", databaseError.toException());
+                   }
+               });
+
+               return status.equals("Ativado");
+
+           }
        });
 
 
@@ -138,6 +162,8 @@ public class ProdutosActivity extends AppCompatActivity {
         startActivity(intent);
         finish();
     }
+
+
 
     @Override
     protected void onStop() {

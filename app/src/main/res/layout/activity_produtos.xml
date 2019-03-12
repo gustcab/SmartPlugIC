@@ -8,14 +8,6 @@
     tools:context=".Activity.ProdutosActivity"
     android:background="@drawable/fundo_roxo_logos2">
 
-    <Button
-        android:id="@+id/btnVoltarTelaInicial2"
-        android:background="@drawable/buttonstyleselector"
-        android:textSize="17sp"
-        android:text="VOLTAR TELA INICIAL"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
-
     <ListView
         android:layout_marginTop="20dp"
         android:id="@+id/listViewConectados"
