@@ -1,6 +1,16 @@
 package smartplug.smartplug.DAO;
 
+import android.support.annotation.NonNull;
+import android.util.Log;
+
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.ValueEventListener;
+
+import java.util.Objects;
+
+import static android.support.constraint.Constraints.TAG;
 
 public class ConexaoDispositivo{
 
@@ -27,18 +37,29 @@ public class ConexaoDispositivo{
     }
 
     public static ConexaoDispositivo LigaAparelho(String aparelho){
+        try {
 
             devicePower = ConfiguracaoFirebase.getFirebase().child("addaparelho").child(aparelho).child("power");
             devicePower.setValue("ON");
             return null;
+        }catch (Exception e)
+        {
+            return null;
+        }
 
     }
 
     public static ConexaoDispositivo DesligaAparelho(String aparelho){
-        devicePower = ConfiguracaoFirebase.getFirebase().child("addaparelho").child(aparelho).child("power");
-        devicePower.setValue("OFF");
+        try {
 
-        return null;
+            devicePower = ConfiguracaoFirebase.getFirebase().child("addaparelho").child(aparelho).child("power");
+            devicePower.setValue("OFF");
+
+            return null;
+        }catch (Exception e)
+        {
+            return null;
+        }
     }
 
 

@@ -18,6 +18,8 @@ import com.google.firebase.auth.FirebaseAuthUserCollisionException;
 import com.google.firebase.auth.FirebaseAuthWeakPasswordException;
 import com.google.firebase.auth.FirebaseUser;
 
+import java.util.Objects;
+
 import smartplug.smartplug.DAO.ConfiguracaoFirebase;
 import smartplug.smartplug.Helper.Base64Custom;
 import smartplug.smartplug.Helper.Preferencias;
@@ -97,7 +99,7 @@ public class CadastroActivity extends AppCompatActivity {
 
                     try{
 
-                        throw  task.getException();
+                        throw Objects.requireNonNull(task.getException());
 
                     }catch (FirebaseAuthWeakPasswordException e){
                         erroExcecao = "Digite uma senha mais forte, contendo no mínimo 8 caracteres de letras e numeros";

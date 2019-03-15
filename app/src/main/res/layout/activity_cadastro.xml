@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     tools:context=".Activity.CadastroActivity"
-    android:background="@drawable/fundo_roxo_logos">
+    android:background="@drawable/fundo_roxo_logos2">
 
     <ScrollView
         android:layout_width="match_parent"

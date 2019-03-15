@@ -47,7 +47,7 @@ public class DadosActivity extends AppCompatActivity
     private LinearLayout ll,llcorrente, lltensao, llgasto, llpotencia;
     private static final Random RANDOM = new Random();
     private LineGraphSeries<DataPoint> series;
-    private int lastX = 0;
+    private int lastX = 0, contagem = 0;
     private TextView gasto, corrente, tensao, potencia;
     private DatabaseReference correnteDispositivo;
     private Double consumoHr = 0.00, correnteEle = 0.00, tensaoEle = 0.00 , potenciaEle = 0.00;
@@ -164,8 +164,7 @@ public class DadosActivity extends AppCompatActivity
             @Override
             public void run() {
                 // we add 100 new entries
-                //for(int i = 0; true ; i++){
-                do{
+                for(int i = 0; i >= 0 ; i++){
                     runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
@@ -190,7 +189,8 @@ public class DadosActivity extends AppCompatActivity
                         // manage error ...
 
                     }
-                }while(true);
+
+                }
             }
         }).start();
     }
@@ -201,7 +201,7 @@ public class DadosActivity extends AppCompatActivity
 
         ValueEventListener valueEventListener = correnteDispositivo.addValueEventListener(new ValueEventListener() {
             @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 // This method is called once with the initial value and again
                 // whenever data at this location is updated.
                Double correnteEletrica = dataSnapshot.getValue(Double.class);
@@ -242,7 +242,7 @@ public class DadosActivity extends AppCompatActivity
 
         ValueEventListener valueEventListener = correnteDispositivo.addValueEventListener(new ValueEventListener() {
             @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 // This method is called once with the initial value and again
                 // whenever data at this location is updated.
                 Double potenciaEletrica = dataSnapshot.getValue(Double.class);
@@ -271,7 +271,7 @@ public class DadosActivity extends AppCompatActivity
 
         ValueEventListener valueEventListener = correnteDispositivo.addValueEventListener(new ValueEventListener() {
             @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 // This method is called once with the initial value and again
                 // whenever data at this location is updated.
                 Double tensao_ele = dataSnapshot.getValue(Double.class);
@@ -369,7 +369,7 @@ public class DadosActivity extends AppCompatActivity
 
     @SuppressWarnings("StatementWithEmptyBody")
     @Override
-    public boolean onNavigationItemSelected(MenuItem item) {
+    public boolean onNavigationItemSelected(@NonNull MenuItem item) {
         // Handle navigation view item clicks here.
         int id = item.getItemId();
 
@@ -382,7 +382,7 @@ public class DadosActivity extends AppCompatActivity
             alertaDeslogar();
 
         } else if (id == R.id.nav_condiguracao_dados) {
-            abreConfigurção();
+            abreConfiguracao();
 
         } else if (id == R.id.nav_compartilhar_dados) {
 
@@ -399,7 +399,7 @@ public class DadosActivity extends AppCompatActivity
         return true;
     }
 
-    private void abreConfigurção(){
+    private void abreConfiguracao(){
 
         Intent intent = new Intent(DadosActivity.this, ProdutosActivity.class);
         startActivity(intent);

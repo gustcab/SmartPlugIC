@@ -12,7 +12,7 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:orientation="vertical">
 
         <!--   <TextView
@@ -43,22 +43,22 @@
             android:alignmentMode="alignMargins"
             android:columnOrderPreserved="false"
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="wrap_content">
 
             <android.support.v7.widget.CardView
-                android:layout_width="25dp"
+                android:layout_width="25sp"
                 android:layout_height="wrap_content"
                 android:layout_columnWeight="1"
                 android:layout_rowWeight="1"
                 app:cardElevation="0dp"
-                app:cardCornerRadius="12dp"
+                app:cardCornerRadius="0dp"
                 android:layout_margin="0dp">
 
                 <LinearLayout
                     android:orientation="vertical"
                     android:padding="10dp"
                     android:gravity="center"
-                    android:layout_width="match_parent"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content">
 
                     <ImageView
@@ -106,7 +106,7 @@
                     android:orientation="vertical"
                     android:padding="10dp"
                     android:gravity="center"
-                    android:layout_width="match_parent"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content">
 
                     <ImageView
@@ -152,7 +152,7 @@
                     android:orientation="vertical"
                     android:padding="10dp"
                     android:gravity="center"
-                    android:layout_width="match_parent"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content">
 
                     <ImageView
@@ -190,7 +190,7 @@
                 android:layout_width="25dp"
                 android:layout_height="wrap_content"
                 android:layout_columnWeight="1"
-                android:layout_rowWeight="18"
+                android:layout_rowWeight="1"
                 app:cardElevation="0dp"
                 app:cardCornerRadius="12dp"
                 android:layout_margin="0dp">
@@ -199,7 +199,7 @@
                     android:orientation="vertical"
                     android:padding="10dp"
                     android:gravity="center"
-                    android:layout_width="match_parent"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content">
 
                     <ImageView

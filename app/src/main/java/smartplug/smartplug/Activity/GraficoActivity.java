@@ -155,8 +155,7 @@ public class GraficoActivity extends AppCompatActivity {
               //  geraGrafico();
 
                 // we add 100 new entries
-               // for(int i = 0; true ; i++){
-                do{
+                for(int i = 0;  i >= 0 ; i++){
                     runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
@@ -175,7 +174,7 @@ public class GraficoActivity extends AppCompatActivity {
                         // manage error ...
 
                     }
-                }while(true);
+                }
             }
         }).start();
     }
