@@ -81,11 +81,11 @@ public class CadastroActivity extends AppCompatActivity {
             public void onComplete(@NonNull Task<AuthResult> task) {
                 if(task.isSuccessful())
                 {
-                    Toast.makeText(CadastroActivity.this, "Usuário cadstrado com sucesso!", Toast.LENGTH_LONG).show();
+                    Toast.makeText(CadastroActivity.this, "Usuário cadastrado com sucesso!", Toast.LENGTH_LONG).show();
 
                     String identificadorUsuario = Base64Custom.codificarBase64(usuarios.getEmail());
 
-                    FirebaseUser usuarioFirebase = task.getResult().getUser();
+                    FirebaseUser usuarioFirebase = Objects.requireNonNull(task.getResult()).getUser();
                     usuarios.setId(identificadorUsuario);
                     usuarios.salvar();
 

@@ -236,6 +236,12 @@
 
         </GridLayout>
 
+        <TextView
+            android:id="@+id/txtnomeAparelho"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:text="Aparelho"/>
+
 
     </LinearLayout>
 

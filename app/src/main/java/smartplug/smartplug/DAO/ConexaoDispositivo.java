@@ -15,9 +15,6 @@ import static android.support.constraint.Constraints.TAG;
 public class ConexaoDispositivo{
 
     private static DatabaseReference deviceStatus, deviceDados, devicePower;
-    private String nomeAparelho;
-    private String status;
-
 
     public static ConexaoDispositivo  AtivaAparelhoFirebase(String aparelho){
 
@@ -36,37 +33,22 @@ public class ConexaoDispositivo{
         return null;
     }
 
-    public static ConexaoDispositivo LigaAparelho(String aparelho){
-        try {
+    public static void LigaAparelho(String aparelho){
 
-            devicePower = ConfiguracaoFirebase.getFirebase().child("addaparelho").child(aparelho).child("power");
-            devicePower.setValue("ON");
-            return null;
-        }catch (Exception e)
-        {
-            return null;
-        }
+        devicePower = ConfiguracaoFirebase.getFirebase().child("addaparelho").child(aparelho).child("power");
+        devicePower.setValue("ON");
 
     }
 
-    public static ConexaoDispositivo DesligaAparelho(String aparelho){
-        try {
+    public static void DesligaAparelho(String aparelho){
 
-            devicePower = ConfiguracaoFirebase.getFirebase().child("addaparelho").child(aparelho).child("power");
-            devicePower.setValue("OFF");
+        devicePower = ConfiguracaoFirebase.getFirebase().child("addaparelho").child(aparelho).child("power");
+        devicePower.setValue("OFF");
 
-            return null;
-        }catch (Exception e)
-        {
-            return null;
-        }
+
     }
-
 
     public static DatabaseReference PegaDados(String aparelho,String dado) {
-
-        final Double[] corrente = new Double[1];
-        corrente[0] = 0.00;
 
         deviceDados = ConfiguracaoFirebase.getFirebase().child("addaparelho").child(aparelho).child(dado);
 
@@ -81,7 +63,7 @@ public class ConexaoDispositivo{
 
         if(produto !=null)
         {
-            Produtos produto2 = produto.get(position);
+            Aparelhos produto2 = produto.get(position);
             nomeAparelho = produto2.getNome();
 
         }

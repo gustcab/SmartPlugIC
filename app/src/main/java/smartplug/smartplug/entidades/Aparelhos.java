@@ -1,6 +1,6 @@
 package smartplug.smartplug.entidades;
 
-public class Produtos {
+public class Aparelhos {
 
     private String nome;
     private String ip;
@@ -11,7 +11,7 @@ public class Produtos {
     private Double potencia;
 
 
-    public Produtos() {
+    public Aparelhos() {
     }
 
     public String getNome() {

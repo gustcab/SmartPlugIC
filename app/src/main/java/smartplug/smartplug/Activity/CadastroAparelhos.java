@@ -12,15 +12,15 @@ import com.google.firebase.database.DatabaseReference;
 
 import smartplug.smartplug.DAO.ConfiguracaoFirebase;
 import smartplug.smartplug.R;
-import smartplug.smartplug.entidades.Produtos;
+import smartplug.smartplug.entidades.Aparelhos;
 
 import static smartplug.smartplug.R.layout.activity_cadastro_produtos;
 
-public class CadastroProdutos extends AppCompatActivity {
+public class CadastroAparelhos extends AppCompatActivity {
 
     private Button btnGravar, btnVoltarTelaInicial;
     private EditText edtNome, edtIp;
-    private Produtos produtos;
+    private Aparelhos aparelhos;
     private DatabaseReference firebase;
 
     @Override
@@ -36,16 +36,16 @@ public class CadastroProdutos extends AppCompatActivity {
         btnGravar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                produtos = new Produtos();
-                produtos.setNome(edtNome.getText().toString());
-                produtos.setIp(edtIp.getText().toString());
-                produtos.setStatus("Desativado");
-                produtos.setPower("OFF");
-                produtos.setCorrente(0.0);
-                produtos.setTensao(0.0);
-                produtos.setPotencia(0.0);
+                aparelhos = new Aparelhos();
+                aparelhos.setNome(edtNome.getText().toString());
+                aparelhos.setIp(edtIp.getText().toString());
+                aparelhos.setStatus("Desativado");
+                aparelhos.setPower("OFF");
+                aparelhos.setCorrente(0.0);
+                aparelhos.setTensao(0.0);
+                aparelhos.setPotencia(0.0);
 
-                salvarProduto(produtos);
+                salvarProduto(aparelhos);
                 limpaCampos();
 
             }
@@ -54,13 +54,13 @@ public class CadastroProdutos extends AppCompatActivity {
     }
 
 
-    private boolean salvarProduto (Produtos produtos){
+    private boolean salvarProduto (Aparelhos aparelhos){
 
         try{
 
             firebase = ConfiguracaoFirebase.getFirebase().child("addaparelho");
-            firebase.child(produtos.getNome()).setValue(produtos);
-            Toast.makeText(CadastroProdutos.this, "Aparelho cadastrado com sucesso", Toast.LENGTH_LONG).show();
+            firebase.child(aparelhos.getNome()).setValue(aparelhos);
+            Toast.makeText(CadastroAparelhos.this, "Aparelho cadastrado com sucesso", Toast.LENGTH_LONG).show();
 
             return true;
 
@@ -77,7 +77,7 @@ public class CadastroProdutos extends AppCompatActivity {
     }
 
     private void voltarHome(){
-        Intent intent = new Intent(CadastroProdutos.this, HomeActivity.class);
+        Intent intent = new Intent(CadastroAparelhos.this, HomeActivity.class);
         startActivity(intent);
         finish();
     }

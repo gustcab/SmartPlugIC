@@ -18,8 +18,6 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.LinearLayout;
-import android.widget.RadioButton;
 import android.widget.TextView;
 
 import com.google.firebase.auth.FirebaseAuth;
@@ -44,16 +42,14 @@ public class DadosActivity extends AppCompatActivity
 
     private FirebaseAuth usuarioFirebase;
     private FloatingActionButton ampliar;
-    private LinearLayout ll,llcorrente, lltensao, llgasto, llpotencia;
     private static final Random RANDOM = new Random();
     private LineGraphSeries<DataPoint> series;
-    private int lastX = 0, contagem = 0;
-    private TextView gasto, corrente, tensao, potencia;
+    private int lastX = 0;
+    private TextView gasto, corrente, tensao, potencia, aparelho;
     private DatabaseReference correnteDispositivo;
     private Double consumoHr = 0.00, correnteEle = 0.00, tensaoEle = 0.00 , potenciaEle = 0.00;
-    private RadioButton btnCorrente, btnTensao, btnGasto, btnPotencia;
     private AlertDialog alerta;
-    private String nomeAparelho = "Teste";
+    private String nomeAparelho = "SmartPlug";
     private boolean pot = false,tens = false,corre = false ,com = false;
 
     @Override
@@ -80,6 +76,9 @@ public class DadosActivity extends AppCompatActivity
         corrente = (TextView) findViewById(R.id.txtCorrente);
         tensao = (TextView) findViewById(R.id.txtTensao);
         potencia = (TextView) findViewById(R.id.txtPotencia);
+        aparelho = (TextView) findViewById(R.id.txtnomeAparelho);
+
+        aparelho.setText(nomeAparelho);
 
 
         @SuppressLint("WrongViewCast") final GraphView graph = (GraphView) findViewById(R.id.grafico_dados);
@@ -112,7 +111,6 @@ public class DadosActivity extends AppCompatActivity
                 tens = false;
                 pot = false;
                 corre = false;
-
                 graph.setTitle("Consumo(Wh/dia)");
            //     viewport.setMaxY(2000);
             }
@@ -164,7 +162,7 @@ public class DadosActivity extends AppCompatActivity
             @Override
             public void run() {
                 // we add 100 new entries
-                for(int i = 0; i >= 0 ; i++){
+                while (true) {
                     runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
@@ -209,7 +207,7 @@ public class DadosActivity extends AppCompatActivity
 
                 Log.d("file", "Value is: " + correnteEletrica);
 
-                corrente.setText("" + correnteEletrica);
+                corrente.setText(String.format("%s", correnteEletrica));
 
             }
 
@@ -226,11 +224,11 @@ public class DadosActivity extends AppCompatActivity
 
         if(correnteEle > 20.00){
 
-            corrente.setText("" + correnteEle);
+            corrente.setText(String.format("%s", correnteEle));
             corrente.setTextColor(Color.RED);
 
         }else{
-            corrente.setText("" + correnteEle);
+            corrente.setText(String.format("%s", correnteEle));
             corrente.setTextColor(Color.BLACK);
         }
 
@@ -250,7 +248,7 @@ public class DadosActivity extends AppCompatActivity
 
                 Log.d("file", "Value is: " + potenciaEletrica);
 
-                potencia.setText("" + potenciaEletrica);
+                potencia.setText(String.format("%s", potenciaEletrica));
                 potencia.setTextColor(Color.BLACK);
 
             }
@@ -279,7 +277,7 @@ public class DadosActivity extends AppCompatActivity
 
                 Log.d("file", "Value is: " + tensao_ele);
 
-                tensao.setText("" + tensao_ele);
+                tensao.setText(String.format("%s", tensao_ele));
                 tensao.setTextColor(Color.BLACK);
 
             }
@@ -401,7 +399,7 @@ public class DadosActivity extends AppCompatActivity
 
     private void abreConfiguracao(){
 
-        Intent intent = new Intent(DadosActivity.this, ProdutosActivity.class);
+        Intent intent = new Intent(DadosActivity.this, AparelhosActivity.class);
         startActivity(intent);
 
     }

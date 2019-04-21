@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context=".Activity.ProdutosActivity"
+    tools:context=".Activity.AparelhosActivity"
     android:background="@drawable/fundo_roxo_logos2">
 
     <ListView

@@ -9,13 +9,13 @@
 
     <application
         android:icon="@mipmap/ic_launcher"
-        android:roundIcon="@mipmap/ic_launcher_round"
         android:label="SmartPlug"
+        android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         tools:ignore="AllowBackup,GoogleAppIndexingWarning">
-
-       <activity
+        <activity android:name=".Activity.TimerActivity"></activity>
+        <activity
             android:name=".Activity.MainActivity"
             android:theme="@style/AppTheme.NoActionBar"
             tools:ignore="InnerclassSeparator">
@@ -25,14 +25,17 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
-        <activity android:name=".Activity.LoginActivity"
+        <activity
+            android:name=".Activity.LoginActivity"
             tools:ignore="InnerclassSeparator" />
-        <activity android:name=".Activity.CadastroActivity"
+        <activity
+            android:name=".Activity.CadastroActivity"
             tools:ignore="InnerclassSeparator" />
-        <activity android:name=".Activity.ProdutosActivity"
+        <activity
+            android:name=".Activity.AparelhosActivity"
             tools:ignore="InnerclassSeparator" />
-        <activity android:name=".Activity.CadastroProdutos"
+        <activity
+            android:name=".Activity.CadastroAparelhos"
             tools:ignore="InnerclassSeparator" />
         <activity
             android:name=".Activity.HomeActivity"
@@ -44,7 +47,8 @@
             android:label="Dados"
             android:theme="@style/AppTheme"
             tools:ignore="InnerclassSeparator" />
-        <activity android:name=".Activity.GraficoActivity"
+        <activity
+            android:name=".Activity.GraficoActivity"
             tools:ignore="InnerclassSeparator" />
     </application>
 

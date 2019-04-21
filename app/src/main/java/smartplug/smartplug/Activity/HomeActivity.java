@@ -2,11 +2,9 @@ package smartplug.smartplug.Activity;
 
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
-import android.os.CountDownTimer;
 import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
@@ -20,7 +18,6 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -34,8 +31,6 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
-import java.util.Locale;
-
 import smartplug.smartplug.DAO.ConexaoDispositivo;
 import smartplug.smartplug.DAO.ConfiguracaoFirebase;
 import smartplug.smartplug.R;
@@ -44,26 +39,18 @@ import static android.support.constraint.Constraints.TAG;
 
 public class HomeActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
-
-    private CountDownTimer TimerCountdown;
-    private boolean timerAtivo;
-
-    private long StartTimeInMillis;
-    private long TimerinMillis;
-    private long TempoFinal;
-
     private FirebaseAuth usuarioFirebase;
     private DatabaseReference mDatabase;
     private DatabaseReference statusDispositivo, nomeUsuario;
     private ConexaoDispositivo powerDispositivo;
 
     private EditText inputTempo;
-    private Button btnVerProduto, btnIniciaTimer, btnReset, btnSetTempo;
+    private Button btnVerProduto;
     private FloatingActionButton imgAddAparelho;
-    private ImageView imglight, imgdados ;
-    private TextView forca, dados, guest, txtTimer, txtLigaDesliga;
+    private ImageView imglight, imgdados, imgTimer ;
+    private TextView forca, dados, guest, txtLigaDesliga;
     private AlertDialog alerta;
-    private String status = "", power = " ", nomeUser = " ", nomeAparelho = "Teste";
+    private String status = "", power = " ", nomeUser = " ", nomeAparelho = "SmartPlug";
 
 
     FirebaseDatabase database = FirebaseDatabase.getInstance();
@@ -80,16 +67,9 @@ public class HomeActivity extends AppCompatActivity
         imgAddAparelho = findViewById(R.id.imgAdicionaaparelho);
         imglight = findViewById(R.id.imglight);
         imgdados = findViewById(R.id.imgDados);
+        imgTimer = findViewById(R.id.imgTimer);
         forca = findViewById(R.id.forca);
-        inputTempo = findViewById(R.id.inputTempo);
         guest = findViewById(R.id.txtguest_home);
-        txtTimer = findViewById(R.id.timer);
-        txtLigaDesliga = findViewById(R.id.txtLigaDesliga);
-        btnIniciaTimer = findViewById(R.id.btnIniciaTimer);
-        btnReset = findViewById(R.id.reset);
-        btnSetTempo = findViewById(R.id.btnsetMinutos);
-
-        getStatus();
 
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -107,7 +87,22 @@ public class HomeActivity extends AppCompatActivity
         imgAddAparelho.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                addProduto();
+                addAparelho();
+
+            }
+        });
+
+        imgTimer.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                if (getStatus()) {
+                    Intent intent = new Intent(HomeActivity.this, TimerActivity.class);
+                    startActivity(intent);
+                } else {
+                    Toast.makeText(HomeActivity.this, "Nenhum aparelho conectado no momento. " +
+                            "Certifique-se de que sua rede de internet esteja ligada!", Toast.LENGTH_LONG).show();
+                }
 
             }
         });
@@ -117,13 +112,12 @@ public class HomeActivity extends AppCompatActivity
             public void onClick(View v) {
 
 
-                if(getStatus()) {
+                if (getStatus()) {
                     Intent intent = new Intent(HomeActivity.this, DadosActivity.class);
                     startActivity(intent);
-                }
-                else
-                {
-                    Toast.makeText(HomeActivity.this, "Nenhum aparelho conectado no momento", Toast.LENGTH_SHORT).show();
+                } else {
+                    Toast.makeText(HomeActivity.this, "Nenhum aparelho conectado no momento. " +
+                            "Certifique-se de que sua rede de internet esteja ligada!", Toast.LENGTH_LONG).show();
                 }
 
             }
@@ -141,242 +135,42 @@ public class HomeActivity extends AppCompatActivity
         btnVerProduto.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                verProduto();
+                verAparelho();
             }
         });
-
-        btnSetTempo.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                String input = inputTempo.getText().toString();
-                if(input.length()==0){
-                    Toast.makeText(HomeActivity.this,"O campo não pode estar vazio",Toast.LENGTH_SHORT).show();
-                    return;
-                }
-
-                long millisInput = Long.parseLong(input) * 60000;
-                if(millisInput == 0){
-                    Toast.makeText(HomeActivity.this, "Use um valor maior do que zero !", Toast.LENGTH_SHORT).show();
-                    return;
-                }
-                setTempo(millisInput);
-                btnIniciaTimer.setVisibility(View.VISIBLE);
-                txtTimer.setVisibility(View.VISIBLE);
-                inputTempo.setText("");
-
-            }
-        });
-
-        btnIniciaTimer.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-                if(timerAtivo)
-                {
-                    pausarTimer();
-
-                }else{
-                    iniciaTimer();
-                }
-
-            }
-        });
-
-        btnReset.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-                resetTimer();
-            }
-        });
-
-        atualizaContagem();
     }
-
-    private void setTempo(long millisegunos){
-        StartTimeInMillis = millisegunos;
-        resetTimer();
-        closeKeyboard();
-
-    }
-
-    private void iniciaTimer()
-    {
-        TimerCountdown = new CountDownTimer(TimerinMillis,1000) {
-            @Override
-            public void onTick(long millisUntilFinished) {
-                TimerinMillis = millisUntilFinished;
-                atualizaContagem();
-
-            }
-
-            @Override
-            public void onFinish() {
-
-                timerAtivo = false;
-                btnIniciaTimer.setText("Iniciar");
-                atualizaBotoes();
-                PowerAparelho();
-
-            }
-        }.start();
-
-        timerAtivo = true;
-        btnIniciaTimer.setText("Pausar");
-        btnReset.setVisibility(View.INVISIBLE);
-    }
-
-    private void atualizaBotoes(){
-        if(timerAtivo){
-            inputTempo.setVisibility(View.INVISIBLE);
-            btnSetTempo.setVisibility(View.INVISIBLE);
-            btnReset.setVisibility(View.INVISIBLE);
-            btnIniciaTimer.setText("Pausar");
-        }else{
-            inputTempo.setVisibility(View.VISIBLE);
-            btnSetTempo.setVisibility(View.VISIBLE);
-
-            btnIniciaTimer.setText("Iniciar");
-
-            if(TimerinMillis < 1000){
-                btnIniciaTimer.setVisibility(View.INVISIBLE);
-            }else{
-                btnIniciaTimer.setVisibility(View.VISIBLE);
-            }
-
-            if(TimerinMillis < StartTimeInMillis){
-                btnReset.setVisibility(View.VISIBLE);
-            }else{
-                btnReset.setVisibility(View.INVISIBLE);
-            }
-        }
-    }
-
-    private void closeKeyboard() {
-        View view = this.getCurrentFocus();
-        if (view != null) {
-            InputMethodManager imm = (InputMethodManager) getSystemService(INPUT_METHOD_SERVICE);
-            imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
-        }
-    }
-
-    @Override
-    protected void onStop() {
-        super.onStop();
-
-        SharedPreferences preferences = getSharedPreferences("preferencias", MODE_PRIVATE);
-        SharedPreferences.Editor editor = preferences.edit();
-
-        editor.putLong("Inicio tempo", StartTimeInMillis);
-        editor.putLong("tempo restante",  TimerinMillis);
-        editor.putBoolean("Tempo ativo", timerAtivo);
-        editor.putLong("final", TempoFinal);
-
-        editor.apply();
-
-        if(TimerCountdown !=null)
-        {
-            TimerCountdown.cancel();
-        }
-    }
-
-    @Override
-    protected void onStart() {
-        super.onStart();
-
-        SharedPreferences prefs = getSharedPreferences("prefs", MODE_PRIVATE);
-
-        StartTimeInMillis = prefs.getLong("startTimeInMillis", 600000);
-        TimerinMillis = prefs.getLong("millisLeft", TimerinMillis);
-        timerAtivo = prefs.getBoolean("timerRunning", false);
-
-        atualizaContagem();
-        atualizaBotoes();
-
-        if (timerAtivo) {
-            TempoFinal = prefs.getLong("endTime", 0);
-            TimerinMillis = TempoFinal - System.currentTimeMillis();
-
-            if (TimerinMillis < 0) {
-                TimerinMillis = 0;
-                timerAtivo = false;
-                atualizaBotoes();
-                atualizaContagem();
-            } else {
-              iniciaTimer();
-            }
-        }
-    }
-
-    private void atualizaContagem()
-    {
-        int horas = (int) (TimerinMillis / 1000) / 3600;
-        int minuto = (int) ((TimerinMillis / 1000) % 3600) / 60;
-        int segundo = (int) (TimerinMillis / 1000) % 60;
-
-        String tempo;
-        if(horas > 0){
-            tempo = String.format(Locale.getDefault(), "%d:%02d:%02d",horas, minuto, segundo);
-
-        }else{
-            tempo = String.format(Locale.getDefault(), "%02d:%02d", minuto, segundo);
-        }
-
-        txtTimer.setText(tempo);
-
-    }
-
-    private void resetTimer()
-    {
-        TimerinMillis = StartTimeInMillis;
-        atualizaContagem();
-        atualizaBotoes();
-    }
-
-    private void pausarTimer()
-    {
-        TimerCountdown.cancel();
-        timerAtivo = false;
-        atualizaBotoes();
-    }
-
     private void PowerAparelho()
     {
         if(getStatus()) {
-            if (forca.getText() == "Ligado") {
-                // if(validaPower()){
+            if (getPower()) {
 
                 Drawable drawable = getResources().getDrawable(R.drawable.ic_light_off);
                 imglight.setImageDrawable(drawable);
-                forca.setText("Desligado");
+                forca.setText(getString(R.string.desligado));
 
-                powerDispositivo = ConexaoDispositivo.DesligaAparelho(nomeAparelho);
+                ConexaoDispositivo.DesligaAparelho(nomeAparelho);
                 //    statusDispositivo = ConexaoDispositivo.DesativaAparelhoFirebase(nomeAparelho);
 
                 Toast.makeText(HomeActivity.this, "Aparelho desligado", Toast.LENGTH_LONG).show();
-
-                txtLigaDesliga.setText("Ligar em");
 
             } else {
 
                 Drawable drawable = getResources().getDrawable(R.drawable.light);
                 imglight.setImageDrawable(drawable);
 
-                forca.setText("Ligado");
+                forca.setText(getString(R.string.ligado));
 
-                powerDispositivo = ConexaoDispositivo.LigaAparelho(nomeAparelho);
+                ConexaoDispositivo.LigaAparelho(nomeAparelho);
                 // statusDispositivo =  ConexaoDispositivo.AtivaAparelhoFirebase(nomeAparelho);
 
                 Toast.makeText(HomeActivity.this, "Aparelho ligado", Toast.LENGTH_LONG).show();
-
-                txtLigaDesliga.setText("Desligar em");
-
 
             }
         }
         else
         {
-            Toast.makeText(HomeActivity.this, "Nenhum aparelho conectado no momento", Toast.LENGTH_SHORT).show();
+            Toast.makeText(HomeActivity.this, "Nenhum aparelho Ativado no momento.", Toast.LENGTH_LONG).show();
+            Toast.makeText(HomeActivity.this, "Verifique o status do dispositivo ou aguarde um momento e tente mais uma vez", Toast.LENGTH_LONG).show();
         }
 
     }
@@ -385,7 +179,7 @@ public class HomeActivity extends AppCompatActivity
     private boolean getStatus(){
 
         statusDispositivo = ConexaoDispositivo.PegaDados(nomeAparelho,"status");
-        statusDispositivo.addValueEventListener(new ValueEventListener() {
+        statusDispositivo.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
 
@@ -403,31 +197,10 @@ public class HomeActivity extends AppCompatActivity
 
     }
 
-    private String getNomeUsuario(){
-
-        nomeUsuario = ConexaoDispositivo.PegaDados(nomeAparelho,"Nome");
-        nomeUsuario.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-
-                nomeUser = dataSnapshot.getValue(String.class);
-
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
-                Log.w(TAG, "onCancelled", databaseError.toException());
-            }
-        });
-
-        return nomeUser;
-
-    }
-
     private boolean getPower(){
 
         statusDispositivo = ConexaoDispositivo.PegaDados(nomeAparelho,"power");
-        statusDispositivo.addValueEventListener(new ValueEventListener() {
+        statusDispositivo.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
 
@@ -441,49 +214,28 @@ public class HomeActivity extends AppCompatActivity
             }
         });
 
+
         return power.equals("ON");
 
     }
 
-    private boolean validaPower(){
+    private void addAparelho(){
 
-        statusDispositivo = ConexaoDispositivo.PegaDados(nomeAparelho,"power");
-
-        if( statusDispositivo.equals("ON")){
-
-            Drawable drawable = getResources().getDrawable(R.drawable.light);
-            imglight.setImageDrawable(drawable);
-            forca.setText("Ligado");
-
-            return true;
-
-        }else{
-            Drawable drawable = getResources().getDrawable(R.drawable.ic_light_off);
-            imglight.setImageDrawable(drawable);
-            forca.setText("Desligado");
-            return false;
-
-        }
-
-    }
-
-    private void addProduto(){
-
-        Intent intent = new Intent(HomeActivity.this, CadastroProdutos.class);
+        Intent intent = new Intent(HomeActivity.this, CadastroAparelhos.class);
         startActivity(intent);
 
     }
 
-    private void verProduto(){
+    private void verAparelho(){
 
-        Intent intent = new Intent(HomeActivity.this, ProdutosActivity.class);
+        Intent intent = new Intent(HomeActivity.this, AparelhosActivity.class);
         startActivity(intent);
 
     }
 
-    private void abreConfigurção(){
+    private void abreConfigura(){
 
-        Intent intent = new Intent(HomeActivity.this, ProdutosActivity.class);
+        Intent intent = new Intent(HomeActivity.this, AparelhosActivity.class);
         startActivity(intent);
 
     }
@@ -602,7 +354,7 @@ public class HomeActivity extends AppCompatActivity
 
         } else if (id == R.id.nav_condiguracao2) {
 
-            abreConfigurção();
+            abreConfigura();
 
         } else if (id == R.id.nav_compartilhar2) {
 

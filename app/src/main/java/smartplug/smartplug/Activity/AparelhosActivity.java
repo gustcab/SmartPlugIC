@@ -10,7 +10,6 @@ import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.Button;
 import android.widget.ListView;
 import android.widget.Toast;
 
@@ -25,19 +24,19 @@ import smartplug.smartplug.Adapter.ProdutosAdapter;
 import smartplug.smartplug.DAO.ConexaoDispositivo;
 import smartplug.smartplug.DAO.ConfiguracaoFirebase;
 import smartplug.smartplug.R;
-import smartplug.smartplug.entidades.Produtos;
+import smartplug.smartplug.entidades.Aparelhos;
 
 import static android.support.constraint.Constraints.TAG;
 
-public class ProdutosActivity extends AppCompatActivity {
+public class AparelhosActivity extends AppCompatActivity {
 
     private ListView listView;
-    private ArrayAdapter<Produtos> adapter;
-    private ArrayList<Produtos> produtos;
+    private ArrayAdapter<Aparelhos> adapter;
+    private ArrayList<Aparelhos> aparelhos;
     private DatabaseReference firebase;
     private ValueEventListener valueEventListenerProdutos;
     private AlertDialog alerta;
-    private Produtos excluiAparelho,alteraStatus;
+    private Aparelhos excluiAparelho,alteraStatus;
     private DatabaseReference statusDispositivo;
     private String status = "";
 
@@ -45,12 +44,12 @@ public class ProdutosActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_produtos);
+        setContentView(R.layout.activity_aparelhos);
 
-        produtos = new ArrayList<>();
+        aparelhos = new ArrayList<>();
 
         listView = (ListView) findViewById(R.id.listViewConectados);
-        adapter = new ProdutosAdapter(this, produtos);
+        adapter = new ProdutosAdapter(this, aparelhos);
 
         listView.setAdapter(adapter);
 
@@ -60,13 +59,13 @@ public class ProdutosActivity extends AppCompatActivity {
        valueEventListenerProdutos = new ValueEventListener() {
            @Override
            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-               produtos.clear();
+               aparelhos.clear();
 
                for(DataSnapshot dados: dataSnapshot.getChildren())
                {
-                   Produtos produtosNovos = dados.getValue(Produtos.class);
+                   Aparelhos aparelhosNovos = dados.getValue(Aparelhos.class);
 
-                   produtos.add(produtosNovos);
+                   aparelhos.add(aparelhosNovos);
                }
 
                adapter.notifyDataSetChanged();
@@ -87,7 +86,7 @@ public class ProdutosActivity extends AppCompatActivity {
 
                //cria o gerador do Alert Dialog
 
-               AlertDialog.Builder builder = new AlertDialog.Builder(ProdutosActivity.this);
+               AlertDialog.Builder builder = new AlertDialog.Builder(AparelhosActivity.this);
 
                // Define Titulo
                builder.setTitle("Processos");
@@ -104,15 +103,15 @@ public class ProdutosActivity extends AppCompatActivity {
 
                        if(getStatus()) {
                            firebase.child(alteraStatus.getNome()).child("status").setValue("Desativado");
-                           Toast.makeText(ProdutosActivity.this,"Aparelho Desativado!", Toast.LENGTH_LONG).show();
+                           Toast.makeText(AparelhosActivity.this,"Aparelho Desativado!", Toast.LENGTH_LONG).show();
 
                        }else
                        {
                            firebase.child(alteraStatus.getNome()).child("status").setValue("Ativado");
-                           Toast.makeText(ProdutosActivity.this,"Aparelho Ativado!", Toast.LENGTH_LONG).show();
+                           Toast.makeText(AparelhosActivity.this,"Aparelho Ativado!", Toast.LENGTH_LONG).show();
                        }
 
-                       Toast.makeText(ProdutosActivity.this,"Alteração efetuada!", Toast.LENGTH_LONG).show();
+                       Toast.makeText(AparelhosActivity.this,"Alteração efetuada!", Toast.LENGTH_LONG).show();
 
                    }
                });
@@ -121,7 +120,7 @@ public class ProdutosActivity extends AppCompatActivity {
                builder.setNegativeButton("Cancelar", new DialogInterface.OnClickListener() {
                    @Override
                    public void onClick(DialogInterface dialog, int which) {
-                       Toast.makeText(ProdutosActivity.this,"Processo Cancelado", Toast.LENGTH_LONG).show();
+                       Toast.makeText(AparelhosActivity.this,"Processo Cancelado", Toast.LENGTH_LONG).show();
                    }
                });
 
@@ -156,14 +155,6 @@ public class ProdutosActivity extends AppCompatActivity {
 
 
     }
-
-    private void voltarTelaInicial(){
-        Intent intent = new Intent(ProdutosActivity.this, HomeActivity.class);
-        startActivity(intent);
-        finish();
-    }
-
-
 
     @Override
     protected void onStop() {

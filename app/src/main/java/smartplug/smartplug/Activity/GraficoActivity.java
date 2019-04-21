@@ -27,15 +27,12 @@ import smartplug.smartplug.R;
 
 public class GraficoActivity extends AppCompatActivity {
 
-    private LinearLayout ll;
-    private static final Random RANDOM = new Random();
     private LineGraphSeries<DataPoint> series;
     private int lastX = 0;
     private DatabaseReference correnteDispositivo;
     private Double consumoHr = 0.00, correnteEle = 0.00, tensaoEle = 0.00 , potenciaEle = 0.00;
-    private RadioButton radPotencia,radTensao,radConsumo,radCorrente;
-    private String nomeAparelho = "Teste";
-    private TextView gasto, corrente, tensao, potencia, gastoLabel, correnteLabel, tensaoLabel, potenciaLabel;
+    private String nomeAparelho = "SmartPlug";
+    private TextView gasto, corrente, tensao, potencia, gastoLabel, correnteLabel, tensaoLabel, potenciaLabel,  aparelho;
     private boolean pot = false,tens = false,corre = false ,com = false;
 
     @Override
@@ -53,6 +50,10 @@ public class GraficoActivity extends AppCompatActivity {
         correnteLabel = (TextView) findViewById(R.id.txtLabel_Corrente_Grafico);
         tensaoLabel = (TextView) findViewById(R.id.txtLabel_Tensao_Grafico);
         potenciaLabel = (TextView) findViewById(R.id.txtLabel_Potencia_Grafico);
+
+        aparelho = (TextView) findViewById(R.id.txtnomeAparelho);
+
+        aparelho.setText(nomeAparelho);
 
         @SuppressLint("WrongViewCast") final GraphView graph = (GraphView) findViewById(R.id.grafico_inteiro);
         //data
@@ -164,7 +165,7 @@ public class GraficoActivity extends AppCompatActivity {
                     });
 
                     pegaDados();
-                    gasto.setText(""+consumoHr);
+                    gasto.setText(String.format("%s", consumoHr));
 
 
                     // sleep to slow down the add of entries
@@ -185,13 +186,13 @@ public class GraficoActivity extends AppCompatActivity {
 
         ValueEventListener valueEventListener = correnteDispositivo.addValueEventListener(new ValueEventListener() {
             @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 // This method is called once with the initial value and again
                 // whenever data at this location is updated.
                 Double correnteEletrica = dataSnapshot.getValue(Double.class);
                 correnteEle = correnteEletrica;
 
-                corrente.setText("" + correnteEle);
+                corrente.setText(String.format("%s", correnteEle));
 
                 Log.d("file", "Value is: " + correnteEletrica);
 
@@ -220,35 +221,6 @@ public class GraficoActivity extends AppCompatActivity {
         viewport.setMinY(0);
         viewport.setMaxY(10);
         viewport.setScrollable(true);
-
-
-        /*
-       if(radCorrente.isChecked()){
-
-            graph.setTitle("Corrente Elétrica(A)");
-            viewport.setMaxY(10);
-
-        }else if(radTensao.isChecked()){
-
-           graph.setTitle("Tensão Elétrica(V)");
-           viewport.setMaxY(10);
-
-       }else if(radPotencia.isChecked()){
-
-           graph.setTitle("Potência Elétrica(W)");
-           viewport.setMaxY(10);
-
-       }else if(radConsumo.isChecked()){
-
-           graph.setTitle("Consumo (Wh/dia)");
-           viewport.setMaxY(10);
-
-       }else
-       {
-           graph.setTitle("Corrente Elétrica(A)");
-           viewport.setMaxY(10);
-       }
-       */
     }
 
     private void pegaDados(){
@@ -264,13 +236,13 @@ public class GraficoActivity extends AppCompatActivity {
 
         ValueEventListener valueEventListener = correnteDispositivo.addValueEventListener(new ValueEventListener() {
             @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 // This method is called once with the initial value and again
                 // whenever data at this location is updated.
                 Double potenciaEletrica = dataSnapshot.getValue(Double.class);
                 potenciaEle = potenciaEletrica;
 
-                potencia.setText(""+ potenciaEle);
+                potencia.setText(String.format("%s", potenciaEle));
 
                 Log.d("file", "Value is: " + potenciaEletrica);
 
@@ -298,7 +270,7 @@ public class GraficoActivity extends AppCompatActivity {
                 Double tensao_ele = dataSnapshot.getValue(Double.class);
                 tensaoEle = tensao_ele;
 
-                tensao.setText(""+ tensao_ele);
+                tensao.setText(String.format("%s", tensao_ele));
 
                 Log.d("file", "Value is: " + tensao_ele);
 
@@ -318,10 +290,7 @@ public class GraficoActivity extends AppCompatActivity {
 
         double potencia = potenciaEle;
 
-        double Consumo = potencia * 24;
-
-
-        return Consumo;
+        return potencia * 24;
     }
 
     // add random data to graph
@@ -352,4 +321,6 @@ public class GraficoActivity extends AppCompatActivity {
 
 
     }
+
+
 }

@@ -10,14 +10,14 @@ import android.widget.TextView;
 import java.util.ArrayList;
 
 import smartplug.smartplug.R;
-import smartplug.smartplug.entidades.Produtos;
+import smartplug.smartplug.entidades.Aparelhos;
 
-public class ProdutosAdapter extends ArrayAdapter<Produtos> {
+public class ProdutosAdapter extends ArrayAdapter<Aparelhos> {
 
-    private ArrayList<Produtos> produto;
+    private ArrayList<Aparelhos> produto;
     private Context context;
 
-    public ProdutosAdapter(Context c, ArrayList<Produtos> objects){
+    public ProdutosAdapter(Context c, ArrayList<Aparelhos> objects){
         super(c, 0, objects);
         this.context = c;
         this.produto = objects;
@@ -39,7 +39,7 @@ public class ProdutosAdapter extends ArrayAdapter<Produtos> {
             TextView txtIp = (TextView) view.findViewById(R.id.txtIp);
             TextView txtStatus = (TextView) view.findViewById(R.id.txtStatus);
 
-            Produtos produto2 = produto.get(position);
+            Aparelhos produto2 = produto.get(position);
 
             txtIp.setTextSize(30);
             txtNome.setTextSize(30);

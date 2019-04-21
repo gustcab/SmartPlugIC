@@ -27,4 +27,9 @@
     <string name="logo">LOGO</string>
     <string name="todo_2">logo3</string>
     <string name="guestHome">User</string>
+    <string name="desligado">Desligado</string>
+    <string name="ligaem">Ligar em</string>
+    <string name="ligado">Ligado</string>
+    <string name="desligaem">Desligar em</string>
+    <string name="on">ON</string>
 </resources>
