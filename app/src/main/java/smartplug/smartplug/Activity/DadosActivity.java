@@ -35,6 +35,7 @@ import java.util.Random;
 import smartplug.smartplug.DAO.ConexaoDispositivo;
 import smartplug.smartplug.DAO.ConfiguracaoFirebase;
 import smartplug.smartplug.R;
+import smartplug.smartplug.entidades.Aparelhos;
 
 
 public class DadosActivity extends AppCompatActivity
@@ -42,15 +43,17 @@ public class DadosActivity extends AppCompatActivity
 
     private FirebaseAuth usuarioFirebase;
     private FloatingActionButton ampliar;
-    private static final Random RANDOM = new Random();
+
     private LineGraphSeries<DataPoint> series;
     private int lastX = 0;
-    private TextView gasto, corrente, tensao, potencia, aparelho;
+    private TextView gasto, corrente, tensao, potencia,
+                     potenciaRe, potenciaAl, FatPotencia, aparelho;
     private DatabaseReference correnteDispositivo;
-    private Double consumoHr = 0.00, correnteEle = 0.00, tensaoEle = 0.00 , potenciaEle = 0.00;
+    private Double consumoHr = 0.00, correnteEle = 0.00, tensaoEle = 0.00 ,
+                   potenciaEle = 0.00, potenciaRela = 0.00, potenciaAlter = 0.00, FatorPot = 0.00;
     private AlertDialog alerta;
     private String nomeAparelho = "SmartPlug";
-    private boolean pot = false,tens = false,corre = false ,com = false;
+    private boolean pot = false, potRe = false, potAl = false, fatPot = false, tens = false, corre = false ,com = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -59,29 +62,32 @@ public class DadosActivity extends AppCompatActivity
 
         usuarioFirebase = ConfiguracaoFirebase.getFirebaseAutenticacao();
 
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
 
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        DrawerLayout drawer = findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawer.addDrawerListener(toggle);
         toggle.syncState();
 
-        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
+        NavigationView navigationView = findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
-        gasto = (TextView) findViewById(R.id.txtGasto);
-        corrente = (TextView) findViewById(R.id.txtCorrente);
-        tensao = (TextView) findViewById(R.id.txtTensao);
-        potencia = (TextView) findViewById(R.id.txtPotencia);
-        aparelho = (TextView) findViewById(R.id.txtnomeAparelho);
+        gasto = findViewById(R.id.txtGasto);
+        corrente = findViewById(R.id.txtCorrente);
+        tensao = findViewById(R.id.txtTensao);
+        potencia = findViewById(R.id.txtPotencia);
+        potenciaRe = findViewById(R.id.txtPotenciaRela);
+        potenciaAl = findViewById(R.id.txtPotenciaAlternada);
+        FatPotencia = findViewById(R.id.txtFatorPotencia);
+        aparelho = findViewById(R.id.txtnomeAparelho);
 
         aparelho.setText(nomeAparelho);
 
 
-        @SuppressLint("WrongViewCast") final GraphView graph = (GraphView) findViewById(R.id.grafico_dados);
+        @SuppressLint("WrongViewCast") final GraphView graph = findViewById(R.id.grafico_dados);
         //data
         series = new LineGraphSeries<DataPoint>();
         graph.addSeries(series);
@@ -93,10 +99,10 @@ public class DadosActivity extends AppCompatActivity
         final Viewport viewport = graph.getViewport();
         viewport.setYAxisBoundsManual(true);
         viewport.setMinY(0);
-        viewport.setMaxY(500);
+        viewport.setMaxY(200);
         viewport.setScrollable(true);
 
-        ampliar = (FloatingActionButton) findViewById(R.id.ampliar_grafico);
+        ampliar = findViewById(R.id.ampliar_grafico);
         ampliar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -111,6 +117,10 @@ public class DadosActivity extends AppCompatActivity
                 tens = false;
                 pot = false;
                 corre = false;
+                potRe = false;
+                potAl = false;
+                fatPot = false;
+
                 graph.setTitle("Consumo(Wh/dia)");
            //     viewport.setMaxY(2000);
             }
@@ -122,6 +132,9 @@ public class DadosActivity extends AppCompatActivity
                 tens = false;
                 pot = false;
                 corre = true;
+                potRe = false;
+                potAl = false;
+                fatPot = false;
 
                 graph.setTitle("Corrente Elétrica(A)");
               //  viewport.setMaxY(100);
@@ -134,6 +147,9 @@ public class DadosActivity extends AppCompatActivity
                 tens = false;
                 pot = false;
                 corre = false;
+                potRe = false;
+                potAl = false;
+                fatPot = false;
 
                 graph.setTitle("Tensão(V)");
             //    viewport.setMaxY(300);
@@ -146,9 +162,57 @@ public class DadosActivity extends AppCompatActivity
                 tens = false;
                 pot = true;
                 corre = false;
+                potRe = false;
+                potAl = false;
+                fatPot = false;
 
                 graph.setTitle("Potência Elétrica(W)");
                // viewport.setMaxY(2000);
+            }
+        });
+        potenciaAl.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                com = false;
+                tens = false;
+                pot = false;
+                corre = false;
+                potRe = false;
+                potAl = true;
+                fatPot = false;
+
+                graph.setTitle("Potência Alternada");
+                // viewport.setMaxY(2000);
+            }
+        });
+        potenciaRe.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                com = false;
+                tens = false;
+                pot = false;
+                corre = false;
+                potRe = true;
+                potAl = false;
+                fatPot = false;
+
+                graph.setTitle("Potência Relativa");
+                // viewport.setMaxY(2000);
+            }
+        });
+        FatPotencia.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                com = false;
+                tens = false;
+                pot = false;
+                corre = false;
+                potRe = false;
+                potAl = false;
+                fatPot = true;
+
+                graph.setTitle("Fator de Potência");
+                // viewport.setMaxY(2000);
             }
         });
     }
@@ -177,6 +241,9 @@ public class DadosActivity extends AppCompatActivity
                     verificaCorrente();
 
                     getPotencia();
+                    getPotenciaAlternada();
+                    getFatorPotencia();
+                    getPotenciaRelativa();
                     getTensao();
 
 
@@ -263,6 +330,93 @@ public class DadosActivity extends AppCompatActivity
 
     }
 
+    private void getPotenciaAlternada(){
+
+        correnteDispositivo = ConexaoDispositivo.PegaDados(nomeAparelho,"potenciaAlter");
+
+        ValueEventListener valueEventListener = correnteDispositivo.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                // This method is called once with the initial value and again
+                // whenever data at this location is updated.
+                Double potenciaEletrica = dataSnapshot.getValue(Double.class);
+                potenciaAlter = potenciaEletrica;
+
+                Log.d("file", "Value is: " + potenciaEletrica);
+
+                potenciaAl.setText(String.format("%s", potenciaEletrica));
+                potenciaAl.setTextColor(Color.BLACK);
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+                // Failed to read value
+                Log.w("file", "Failed to read value.", databaseError.toException());
+            }
+
+        });
+
+    }
+
+    private void getPotenciaRelativa(){
+
+        correnteDispositivo = ConexaoDispositivo.PegaDados(nomeAparelho,"potenciaRela");
+
+        ValueEventListener valueEventListener = correnteDispositivo.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                // This method is called once with the initial value and again
+                // whenever data at this location is updated.
+                Double potenciaEletrica = dataSnapshot.getValue(Double.class);
+                potenciaRela = potenciaEletrica;
+
+                Log.d("file", "Value is: " + potenciaEletrica);
+
+                potenciaRe.setText(String.format("%s", potenciaEletrica));
+                potenciaRe.setTextColor(Color.BLACK);
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+                // Failed to read value
+                Log.w("file", "Failed to read value.", databaseError.toException());
+            }
+
+        });
+
+    }
+
+    private void getFatorPotencia(){
+
+        correnteDispositivo = ConexaoDispositivo.PegaDados(nomeAparelho,"fatorPotencia");
+
+        ValueEventListener valueEventListener = correnteDispositivo.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                // This method is called once with the initial value and again
+                // whenever data at this location is updated.
+                Double fator = dataSnapshot.getValue(Double.class);
+                FatorPot = fator;
+
+                Log.d("file", "Value is: " + fator);
+
+                FatPotencia.setText(String.format("%s", fator));
+                FatPotencia.setTextColor(Color.BLACK);
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+                // Failed to read value
+                Log.w("file", "Failed to read value.", databaseError.toException());
+            }
+
+        });
+
+    }
+
     private void getTensao(){
 
         correnteDispositivo = ConexaoDispositivo.PegaDados(nomeAparelho,"tensao");
@@ -319,6 +473,18 @@ public class DadosActivity extends AppCompatActivity
         }else if(pot){
 
             series.appendData(new DataPoint(lastX++, potenciaEle), true, 10);
+
+        }else if(potRe){
+
+            series.appendData(new DataPoint(lastX++, potenciaRela), true, 10);
+
+        }else if(potAl){
+
+            series.appendData(new DataPoint(lastX++, potenciaAlter), true, 10);
+
+        }else if(fatPot){
+
+            series.appendData(new DataPoint(lastX++, FatorPot), true, 10);
 
         }else if(com){
 

@@ -47,7 +47,7 @@ public class HomeActivity extends AppCompatActivity
     private EditText inputTempo;
     private Button btnVerProduto;
     private FloatingActionButton imgAddAparelho;
-    private ImageView imglight, imgdados, imgTimer ;
+    private ImageView imglight, imgdados;
     private TextView forca, dados, guest, txtLigaDesliga;
     private AlertDialog alerta;
     private String status = "", power = " ", nomeUser = " ", nomeAparelho = "SmartPlug";
@@ -67,7 +67,6 @@ public class HomeActivity extends AppCompatActivity
         imgAddAparelho = findViewById(R.id.imgAdicionaaparelho);
         imglight = findViewById(R.id.imglight);
         imgdados = findViewById(R.id.imgDados);
-        imgTimer = findViewById(R.id.imgTimer);
         forca = findViewById(R.id.forca);
         guest = findViewById(R.id.txtguest_home);
 
@@ -92,20 +91,6 @@ public class HomeActivity extends AppCompatActivity
             }
         });
 
-        imgTimer.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-                if (getStatus()) {
-                    Intent intent = new Intent(HomeActivity.this, TimerActivity.class);
-                    startActivity(intent);
-                } else {
-                    Toast.makeText(HomeActivity.this, "Nenhum aparelho conectado no momento. " +
-                            "Certifique-se de que sua rede de internet esteja ligada!", Toast.LENGTH_LONG).show();
-                }
-
-            }
-        });
 
         imgdados.setOnClickListener(new View.OnClickListener() {
             @Override

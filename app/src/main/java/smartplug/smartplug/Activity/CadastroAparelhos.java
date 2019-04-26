@@ -18,7 +18,7 @@ import static smartplug.smartplug.R.layout.activity_cadastro_produtos;
 
 public class CadastroAparelhos extends AppCompatActivity {
 
-    private Button btnGravar, btnVoltarTelaInicial;
+    private Button btnGravar;
     private EditText edtNome, edtIp;
     private Aparelhos aparelhos;
     private DatabaseReference firebase;
@@ -28,10 +28,9 @@ public class CadastroAparelhos extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(activity_cadastro_produtos);
 
-        edtNome = (EditText) findViewById(R.id.edtNomeProduto);
-        edtIp = (EditText) findViewById(R.id.edtValorProduto);
-        btnGravar = (Button) findViewById(R.id.btnGravar);
-       // btnVoltarTelaInicial = (Button) findViewById(R.id.btnVoltarTelaInicial);
+        edtNome = findViewById(R.id.edtNomeProduto);
+        edtIp = findViewById(R.id.edtValorProduto);
+        btnGravar = findViewById(R.id.btnGravar);
 
         btnGravar.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -44,9 +43,14 @@ public class CadastroAparelhos extends AppCompatActivity {
                 aparelhos.setCorrente(0.0);
                 aparelhos.setTensao(0.0);
                 aparelhos.setPotencia(0.0);
+                aparelhos.setPotenciaRela(0.0);
+                aparelhos.setPotenciaAlter(0.0);
+                aparelhos.setFatorPotencia(0.0);
 
                 salvarProduto(aparelhos);
                 limpaCampos();
+
+                voltarHome();
 
             }
         });

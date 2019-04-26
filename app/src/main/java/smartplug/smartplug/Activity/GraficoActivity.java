@@ -30,10 +30,15 @@ public class GraficoActivity extends AppCompatActivity {
     private LineGraphSeries<DataPoint> series;
     private int lastX = 0;
     private DatabaseReference correnteDispositivo;
-    private Double consumoHr = 0.00, correnteEle = 0.00, tensaoEle = 0.00 , potenciaEle = 0.00;
+    private Double consumoHr = 0.00, correnteEle = 0.00, tensaoEle = 0.00 ,
+                  potenciaEle = 0.00, potenciaRela = 0.00, potenciaAlter = 0.00, FatorPot = 0.00;
+
     private String nomeAparelho = "SmartPlug";
-    private TextView gasto, corrente, tensao, potencia, gastoLabel, correnteLabel, tensaoLabel, potenciaLabel,  aparelho;
-    private boolean pot = false,tens = false,corre = false ,com = false;
+
+    private TextView gasto, corrente, tensao, potencia, gastoLabel, correnteLabel,
+                     tensaoLabel, potenciaLabel, potenciaRe, potenciaAl, FatPotencia,
+                     potenciaReLabel, potenciaAlLabel, FatPotenciaLabel,aparelho;
+    private boolean pot = false,tens = false,corre = false ,com = false, potRe = false, potAl = false, fatPot = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,17 +46,23 @@ public class GraficoActivity extends AppCompatActivity {
         setContentView(R.layout.activity_grafico);
 
 
-        gasto = (TextView) findViewById(R.id.txtGasto_Grafico);
-        corrente = (TextView) findViewById(R.id.txtCorrente_Grafico);
-        tensao = (TextView) findViewById(R.id.txtTensao_Grafico);
-        potencia = (TextView) findViewById(R.id.txtPotencia_Grafico);
+        gasto = findViewById(R.id.txtGasto_Grafico);
+        corrente = findViewById(R.id.txtCorrente_Grafico);
+        tensao = findViewById(R.id.txtTensao_Grafico);
+        potencia = findViewById(R.id.txtPotencia_Grafico);
+        potenciaAl = findViewById(R.id.txtPotenciaAlternada_Grafico);
+        potenciaRe = findViewById(R.id.txtPotenciaRelativa_Grafico);
+        FatPotencia = findViewById(R.id.txtFatorPotencia_Grafico);
 
-        gastoLabel = (TextView) findViewById(R.id.txt_LabelGasto_Grafico);
-        correnteLabel = (TextView) findViewById(R.id.txtLabel_Corrente_Grafico);
-        tensaoLabel = (TextView) findViewById(R.id.txtLabel_Tensao_Grafico);
-        potenciaLabel = (TextView) findViewById(R.id.txtLabel_Potencia_Grafico);
+        gastoLabel = findViewById(R.id.txt_LabelGasto_Grafico);
+        correnteLabel = findViewById(R.id.txtLabel_Corrente_Grafico);
+        tensaoLabel = findViewById(R.id.txtLabel_Tensao_Grafico);
+        potenciaLabel =  findViewById(R.id.txtLabel_Potencia_Grafico);
+        potenciaReLabel =  findViewById(R.id.txtLabel_PotenciaRelativa_Grafico);
+        potenciaAlLabel =  findViewById(R.id.txtLabel_PotenciaAlternada_Grafico);
+        FatPotenciaLabel =  findViewById(R.id.txtLabel_FatorPotencia_Grafico);
 
-        aparelho = (TextView) findViewById(R.id.txtnomeAparelho);
+        aparelho = findViewById(R.id.txtnomeAparelho);
 
         aparelho.setText(nomeAparelho);
 
@@ -66,11 +77,10 @@ public class GraficoActivity extends AppCompatActivity {
         final Viewport viewport = graph.getViewport();
         viewport.setYAxisBoundsManual(true);
         viewport.setMinY(0);
-        viewport.setMaxY(100);
+        viewport.setMaxY(200);
         viewport.setScrollable(true);
 
          pegaDados();
-        // geraGrafico();
 
         gasto.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -142,6 +152,69 @@ public class GraficoActivity extends AppCompatActivity {
                 //  viewport.setMaxY(2000);
             }
         });
+        potenciaAl.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                com = false;
+                tens = false;
+                pot = false;
+                corre = false;
+                potRe = false;
+                potAl = true;
+                fatPot = false;
+
+                gastoLabel.setTextColor(Color.BLACK);
+                correnteLabel.setTextColor(Color.BLACK);
+                tensaoLabel.setTextColor(Color.BLACK);
+                potencia.setTextColor(Color.BLACK);
+                potenciaAlLabel.setTextColor(Color.rgb(142,3,180));
+
+                graph.setTitle("Potência Alternada");
+                // viewport.setMaxY(2000);
+            }
+        });
+        potenciaRe.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                com = false;
+                tens = false;
+                pot = false;
+                corre = false;
+                potRe = true;
+                potAl = false;
+                fatPot = false;
+
+                gastoLabel.setTextColor(Color.BLACK);
+                correnteLabel.setTextColor(Color.BLACK);
+                tensaoLabel.setTextColor(Color.BLACK);
+                potencia.setTextColor(Color.BLACK);
+                potenciaReLabel.setTextColor(Color.rgb(142,3,180));
+
+                graph.setTitle("Potência Relativa");
+                // viewport.setMaxY(2000);
+            }
+        });
+        FatPotencia.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                com = false;
+                tens = false;
+                pot = false;
+                corre = false;
+                potRe = false;
+                potAl = false;
+                fatPot = true;
+
+                gastoLabel.setTextColor(Color.BLACK);
+                correnteLabel.setTextColor(Color.BLACK);
+                tensaoLabel.setTextColor(Color.BLACK);
+                potencia.setTextColor(Color.BLACK);
+                FatPotenciaLabel.setTextColor(Color.rgb(142,3,180));
+
+                graph.setTitle("Fator de Potência");
+                // viewport.setMaxY(2000);
+            }
+        });
 
     }
 
@@ -207,24 +280,11 @@ public class GraficoActivity extends AppCompatActivity {
         });
     }
 
-    private void geraGrafico(){
-
-        @SuppressLint("WrongViewCast") final GraphView graph = (GraphView) findViewById(R.id.grafico_inteiro);
-        //data
-        series = new LineGraphSeries<DataPoint>();
-        graph.addSeries(series);
-        graph.setTitle("Corrente Elétrica(A)");
-
-        //customize
-        final Viewport viewport = graph.getViewport();
-        viewport.setYAxisBoundsManual(true);
-        viewport.setMinY(0);
-        viewport.setMaxY(10);
-        viewport.setScrollable(true);
-    }
-
     private void pegaDados(){
         getPotencia();
+        getPotenciaRelativa();
+        getPotenciaAlternada();
+        getFatorPotencia();
         getCorrente();
         getTensao();
         consumoHr = CalculoConsumo();
@@ -245,6 +305,93 @@ public class GraficoActivity extends AppCompatActivity {
                 potencia.setText(String.format("%s", potenciaEle));
 
                 Log.d("file", "Value is: " + potenciaEletrica);
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+                // Failed to read value
+                Log.w("file", "Failed to read value.", databaseError.toException());
+            }
+
+        });
+
+    }
+
+    private void getPotenciaAlternada(){
+
+        correnteDispositivo = ConexaoDispositivo.PegaDados(nomeAparelho,"potenciaAlter");
+
+        ValueEventListener valueEventListener = correnteDispositivo.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                // This method is called once with the initial value and again
+                // whenever data at this location is updated.
+                Double potenciaEletrica = dataSnapshot.getValue(Double.class);
+                potenciaAlter = potenciaEletrica;
+
+                Log.d("file", "Value is: " + potenciaEletrica);
+
+                potenciaAl.setText(String.format("%s", potenciaEletrica));
+                potenciaAl.setTextColor(Color.BLACK);
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+                // Failed to read value
+                Log.w("file", "Failed to read value.", databaseError.toException());
+            }
+
+        });
+
+    }
+
+    private void getPotenciaRelativa(){
+
+        correnteDispositivo = ConexaoDispositivo.PegaDados(nomeAparelho,"potenciaRela");
+
+        ValueEventListener valueEventListener = correnteDispositivo.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                // This method is called once with the initial value and again
+                // whenever data at this location is updated.
+                Double potenciaEletrica = dataSnapshot.getValue(Double.class);
+                potenciaRela = potenciaEletrica;
+
+                Log.d("file", "Value is: " + potenciaEletrica);
+
+                potenciaRe.setText(String.format("%s", potenciaEletrica));
+                potenciaRe.setTextColor(Color.BLACK);
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+                // Failed to read value
+                Log.w("file", "Failed to read value.", databaseError.toException());
+            }
+
+        });
+
+    }
+
+    private void getFatorPotencia(){
+
+        correnteDispositivo = ConexaoDispositivo.PegaDados(nomeAparelho,"fatorPotencia");
+
+        ValueEventListener valueEventListener = correnteDispositivo.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                // This method is called once with the initial value and again
+                // whenever data at this location is updated.
+                Double fator = dataSnapshot.getValue(Double.class);
+                FatorPot = fator;
+
+                Log.d("file", "Value is: " + fator);
+
+                FatPotencia.setText(String.format("%s", fator));
+                FatPotencia.setTextColor(Color.BLACK);
 
             }
 
@@ -306,6 +453,18 @@ public class GraficoActivity extends AppCompatActivity {
         }else if(tens){
 
             series.appendData(new DataPoint(lastX++, tensaoEle), true, 10);
+
+        }else if(potRe){
+
+            series.appendData(new DataPoint(lastX++, potenciaRela), true, 10);
+
+        }else if(potAl){
+
+            series.appendData(new DataPoint(lastX++, potenciaAlter), true, 10);
+
+        }else if(fatPot){
+
+            series.appendData(new DataPoint(lastX++, FatorPot), true, 10);
 
         }else if(pot){
 

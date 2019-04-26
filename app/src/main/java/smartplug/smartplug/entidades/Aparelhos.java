@@ -9,6 +9,9 @@ public class Aparelhos {
     private Double corrente;
     private Double tensao;
     private Double potencia;
+    private Double potenciaRela;
+    private Double potenciaAlter;
+    private Double FatorPotencia;
 
 
     public Aparelhos() {
@@ -62,11 +65,35 @@ public class Aparelhos {
         this.status = status;
     }
 
-    public Double getPotencia() {
+    public  Double getPotencia() {
         return potencia;
     }
 
     public void setPotencia(Double potencia) {
         this.potencia = potencia;
+    }
+
+    public Double getPotenciaRela() {
+        return potenciaRela;
+    }
+
+    public void setPotenciaRela(Double potenciaRela) {
+        this.potenciaRela = potenciaRela;
+    }
+
+    public Double getPotenciaAlter() {
+        return potenciaAlter;
+    }
+
+    public void setPotenciaAlter(Double potenciaAlter) {
+        this.potenciaAlter = potenciaAlter;
+    }
+
+    public Double getFatorPotencia() {
+        return FatorPotencia;
+    }
+
+    public void setFatorPotencia(Double fatorPot) {
+        FatorPotencia = fatorPot;
     }
 }
