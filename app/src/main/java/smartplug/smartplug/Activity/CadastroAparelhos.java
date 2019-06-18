@@ -14,7 +14,7 @@ import smartplug.smartplug.DAO.ConfiguracaoFirebase;
 import smartplug.smartplug.R;
 import smartplug.smartplug.entidades.Aparelhos;
 
-import static smartplug.smartplug.R.layout.activity_cadastro_produtos;
+import static smartplug.smartplug.R.layout.activity_cadastro_aparelhos;
 
 public class CadastroAparelhos extends AppCompatActivity {
 
@@ -26,7 +26,7 @@ public class CadastroAparelhos extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(activity_cadastro_produtos);
+        setContentView(activity_cadastro_aparelhos);
 
         edtNome = findViewById(R.id.edtNomeProduto);
         edtIp = findViewById(R.id.edtValorProduto);
