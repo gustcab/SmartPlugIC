@@ -143,8 +143,8 @@ public class DadosActivity extends AppCompatActivity
         tensao.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                com = true;
-                tens = false;
+                com = false;
+                tens = true;
                 pot = false;
                 corre = false;
                 potRe = false;

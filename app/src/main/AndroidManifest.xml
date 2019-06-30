@@ -26,9 +26,6 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".Activity.LoginActivity"
-            tools:ignore="InnerclassSeparator" />
-        <activity
             android:name=".Activity.CadastroActivity"
             tools:ignore="InnerclassSeparator" />
         <activity

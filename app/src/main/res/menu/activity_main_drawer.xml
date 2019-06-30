@@ -25,10 +25,6 @@
                 android:icon="@drawable/ic_menu_share"
                 android:title="Compartilhar" />
 
-            <item
-                android:id="@+id/nav_Logar"
-                android:icon="@drawable/ic_logar"
-                android:title="Logar" />
 
         </menu>
     </item>

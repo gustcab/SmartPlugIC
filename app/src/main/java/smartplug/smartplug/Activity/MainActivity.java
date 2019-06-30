@@ -2,6 +2,7 @@ package smartplug.smartplug.Activity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.view.View;
@@ -14,12 +15,19 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Button;
+import android.widget.EditText;
+import android.widget.TextView;
+import android.widget.Toast;
 
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 
 import smartplug.smartplug.DAO.ConfiguracaoFirebase;
 import smartplug.smartplug.Fragment.FotosTelaInicialFragment;
 import smartplug.smartplug.R;
+import smartplug.smartplug.entidades.Usuarios;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
@@ -30,6 +38,12 @@ public class MainActivity extends AppCompatActivity
     private FotosTelaInicialFragment fotosTelaInicialFragment;
     private FragmentManager fragmentManager;
     private FragmentTransaction fragmentTransaction;
+
+    private EditText edtEmail;
+    private EditText edtSenha;
+    private TextView tvAbreCadastro;
+    private Button btnLogar;
+    private Usuarios usuarios;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,25 +64,69 @@ public class MainActivity extends AppCompatActivity
 
         verificaUsuarioLogado(); //Verifica se o usuario esta logado
 
-        btnAbrirActivityLogin = (Button) findViewById(R.id.btnFazerLogin);
-
-        btnAbrirActivityLogin.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-
-               abreLogin();
-
-            }
-        });
+        edtEmail = (EditText) findViewById(R.id.edtEmail);
+        edtSenha = (EditText) findViewById(R.id.edtSenha);
+        tvAbreCadastro = (TextView) findViewById(R.id.tvAbreCadastro);
+        btnLogar = (Button) findViewById(R.id.btnLogar);
 
        // carregaFragmentTelaInicial();
+
+        btnLogar.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(!edtEmail.getText().toString().equals("") && !edtSenha.getText().toString().equals("")) {
+
+                    usuarios = new Usuarios();
+                    usuarios.setEmail(edtEmail.getText().toString());
+                    usuarios.setSenha(edtSenha.getText().toString());
+
+                    validarLogin();
+
+                }else {
+                    Toast.makeText(MainActivity.this, "Preencha os campos de e-mail e senha", Toast.LENGTH_SHORT).show();
+                }
+            }
+
+        });
+
+        tvAbreCadastro.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                abreCadastroUsuario();
+            }
+        });
     }
 
-    private void abreLogin(){
+    private void validarLogin(){
 
-        Intent intentAbrirTelaLogin = new Intent(MainActivity.this, LoginActivity.class);
+        autenticacao = ConfiguracaoFirebase.getFirebaseAutenticacao();
+        autenticacao.signInWithEmailAndPassword(usuarios.getEmail(), usuarios.getSenha()).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+            @Override
+            public void onComplete(@NonNull Task<AuthResult> task) {
 
-        startActivity(intentAbrirTelaLogin);
+                if(task.isSuccessful()){
+
+                    abrirHome();
+                    Toast.makeText(MainActivity.this, "Login efetuado com sucesso", Toast.LENGTH_SHORT).show();
+
+                }else {
+                    Toast.makeText(MainActivity.this, "Usuário ou senha inválidos", Toast.LENGTH_SHORT).show();
+                }
+
+            }
+
+
+        });
+    }
+
+    public void abrirHome(){
+        Intent intentAbrirTelaPrincipal = new Intent(MainActivity.this, HomeActivity.class);
+        startActivity(intentAbrirTelaPrincipal);
+    }
+
+    public void abreCadastroUsuario(){
+        Intent intent = new Intent(MainActivity.this, CadastroActivity.class);
+        startActivity(intent);
     }
 
     @Override
@@ -109,11 +167,7 @@ public class MainActivity extends AppCompatActivity
         // Handle navigation view item clicks here.
         int id = item.getItemId();
 
-        if (id == R.id.nav_Logar) {
-
-            abreLogin();
-
-        } else if (id == R.id.nav_condiguracao) {
+       if (id == R.id.nav_condiguracao) {
 
         } else if (id == R.id.nav_compartilhar) {
 

@@ -25,12 +25,77 @@
         android:gravity="center"
         android:text="Seja Bem Vindo!!!"
         android:textColor="#fff"
-        android:textSize="40sp"
+        android:textSize="30sp"
         tools:ignore="HardcodedText" />
 
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:paddingTop="170dp">
+
+            <TextView
+                android:id="@+id/txtLogin"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Faça seu Login"
+                android:layout_gravity="center"
+                android:textColor="#000000"
+                android:textSize="20sp"
+                tools:ignore="HardcodedText" />
+
+            <EditText
+                android:textColor="#000000"
+                android:textColorHint="#000000"
+                android:background="#93D8D8D8"
+                android:layout_width="300dp"
+                android:layout_height="60dp"
+                android:id="@+id/edtEmail"
+                android:hint="E-mail"
+                android:layout_gravity="center"
+                android:inputType="textEmailAddress"
+                />
+
+            <EditText
+                android:textColor="#000000"
+                android:textColorHint="#000000"
+                android:background="#93D8D8D8"
+                android:layout_marginTop="10dp"
+                android:layout_width="300dp"
+                android:layout_height="60dp"
+                android:id="@+id/edtSenha"
+                android:hint="Senha"
+                android:layout_gravity="center"
+                android:inputType="textPassword"/>
+
+            <Button
+                android:textColor="#fff"
+                android:background="@drawable/buttonstyleselector"
+                android:layout_marginTop="40dp"
+                android:id="@+id/btnLogar"
+                android:layout_width="350dp"
+                android:layout_gravity="center"
+                android:layout_height="50dp"
+                android:text="Login"
+                />
+
+            <TextView
+                android:textColor="#000000"
+                android:layout_width="350dp"
+                android:layout_height="60dp"
+                android:layout_gravity="center"
+                android:text="Não tem cadastro? Tente aqui"
+                android:id="@+id/tvAbreCadastro"
+                android:textSize="18dp"
+                android:textStyle="bold"
+                android:layout_marginTop="10dp"
+                />
+
+        </LinearLayout>
 
       <!--  <ImageView
             android:layout_width="match_parent"
@@ -68,19 +133,6 @@
             android:textStyle="bold"
             tools:ignore="HardcodedText,RtlHardcoded" />
 
-
-        <Button
-            android:id="@+id/btnFazerLogin"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_alignParentBottom="true"
-            android:layout_gravity="center"
-            android:layout_marginBottom="0dp"
-            android:background="@drawable/buttonstyleselector"
-            android:text="@string/come_ar"
-            android:textColor="#fff"
-            android:textSize="20sp"
-            android:textStyle="bold" />
 
     </RelativeLayout>
 
