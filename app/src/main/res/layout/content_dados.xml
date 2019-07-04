@@ -220,7 +220,7 @@
                     <TextView
                         android:id="@+id/txtLabel_PotenciaRela"
                         android:gravity="center"
-                        android:text="Potência Relativa"
+                        android:text="Potência Reativa"
                         android:textSize="17sp"
                         android:textColor="#000000"
                         android:textStyle="bold"

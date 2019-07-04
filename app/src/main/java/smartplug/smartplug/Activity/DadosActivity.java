@@ -196,7 +196,7 @@ public class DadosActivity extends AppCompatActivity
                 potAl = false;
                 fatPot = false;
 
-                graph.setTitle("Potência Relativa");
+                graph.setTitle("Potência Reativa");
                 // viewport.setMaxY(2000);
             }
         });

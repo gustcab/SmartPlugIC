@@ -190,7 +190,7 @@ public class GraficoActivity extends AppCompatActivity {
                 potencia.setTextColor(Color.BLACK);
                 potenciaReLabel.setTextColor(Color.rgb(142,3,180));
 
-                graph.setTitle("Potência Relativa");
+                graph.setTitle("Potência Reativa");
                 // viewport.setMaxY(2000);
             }
         });
