@@ -13,7 +13,7 @@
     android:layout_height="wrap_content">
     <GridLayout
         android:layout_marginTop="10dp"
-        android:columnCount="4"
+        android:columnCount="3"
         android:rowCount="1"
         android:alignmentMode="alignMargins"
         android:columnOrderPreserved="false"
@@ -153,7 +153,7 @@
                 <TextView
                     android:id="@+id/txtLabel_Potencia_Grafico"
                     android:gravity="center"
-                    android:text="Potência (W)"
+                    android:text="Potência Ativa(W)"
                     android:textSize="14sp"
                     android:textColor="#000000"
                     android:textStyle="bold"
@@ -186,7 +186,7 @@
                     android:layout_height="30dp" />
 
                 <TextView
-                    android:id="@+id/txtPotenciaRelativa_Grafico"
+                    android:id="@+id/txtPotenciaAparente_Grafico"
                     android:layout_width="89dp"
                     android:layout_height="wrap_content"
                     android:background="@drawable/edittextstyle"
@@ -198,56 +198,9 @@
 
 
                 <TextView
-                    android:id="@+id/txtLabel_PotenciaRelativa_Grafico"
+                    android:id="@+id/txtLabel_PotenciaAparente_Grafico"
                     android:gravity="center"
-                    android:text="Potência Reativa"
-                    android:textSize="14sp"
-                    android:textColor="#000000"
-                    android:textStyle="bold"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content" />
-
-
-            </LinearLayout>
-
-        </android.support.v7.widget.CardView>
-
-        <android.support.v7.widget.CardView
-            android:layout_width="30dp"
-            android:layout_height="wrap_content"
-            android:layout_columnWeight="1"
-            android:layout_rowWeight="1"
-            app:cardElevation="0dp"
-            app:cardCornerRadius="12dp"
-            android:layout_margin="0dp">
-            <LinearLayout
-                android:orientation="vertical"
-                android:padding="10dp"
-                android:gravity="center"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
-
-                <ImageView
-                    android:src="@drawable/ic_relampago"
-                    android:layout_width="30dp"
-                    android:layout_height="30dp" />
-
-                <TextView
-                    android:id="@+id/txtPotenciaAlternada_Grafico"
-                    android:layout_width="89dp"
-                    android:layout_height="wrap_content"
-                    android:background="@drawable/edittextstyle"
-                    android:gravity="center"
-                    android:text="Potência"
-                    android:textColor="#000000"
-                    android:textSize="18sp"
-                    android:textStyle="bold" />
-
-
-                <TextView
-                    android:id="@+id/txtLabel_PotenciaAlternada_Grafico"
-                    android:gravity="center"
-                    android:text="Potência Alternada"
+                    android:text="Potência Aparente"
                     android:textSize="14sp"
                     android:textColor="#000000"
                     android:textStyle="bold"

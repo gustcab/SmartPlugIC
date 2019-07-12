@@ -47,13 +47,13 @@ public class DadosActivity extends AppCompatActivity
     private LineGraphSeries<DataPoint> series;
     private int lastX = 0;
     private TextView gasto, corrente, tensao, potencia,
-                     potenciaRe, potenciaAl, FatPotencia, aparelho;
+                      potenciaAl, FatPotencia, aparelho;
     private DatabaseReference correnteDispositivo;
     private Double consumoHr = 0.00, correnteEle = 0.00, tensaoEle = 0.00 ,
-                   potenciaEle = 0.00, potenciaRela = 0.00, potenciaAlter = 0.00, FatorPot = 0.00;
+                   potenciaEle = 0.00, potenciaAlter = 0.00, FatorPot = 0.00;
     private AlertDialog alerta;
     private String nomeAparelho = "SmartPlug";
-    private boolean pot = false, potRe = false, potAl = false, fatPot = false, tens = false, corre = false ,com = false;
+    private boolean pot = false, potAl = false, fatPot = false, tens = false, corre = false ,com = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -79,8 +79,7 @@ public class DadosActivity extends AppCompatActivity
         corrente = findViewById(R.id.txtCorrente);
         tensao = findViewById(R.id.txtTensao);
         potencia = findViewById(R.id.txtPotencia);
-        potenciaRe = findViewById(R.id.txtPotenciaRela);
-        potenciaAl = findViewById(R.id.txtPotenciaAlternada);
+        potenciaAl = findViewById(R.id.txtPotenciaAparente);
         FatPotencia = findViewById(R.id.txtFatorPotencia);
         aparelho = findViewById(R.id.txtnomeAparelho);
 
@@ -117,7 +116,6 @@ public class DadosActivity extends AppCompatActivity
                 tens = false;
                 pot = false;
                 corre = false;
-                potRe = false;
                 potAl = false;
                 fatPot = false;
 
@@ -132,7 +130,6 @@ public class DadosActivity extends AppCompatActivity
                 tens = false;
                 pot = false;
                 corre = true;
-                potRe = false;
                 potAl = false;
                 fatPot = false;
 
@@ -147,7 +144,6 @@ public class DadosActivity extends AppCompatActivity
                 tens = true;
                 pot = false;
                 corre = false;
-                potRe = false;
                 potAl = false;
                 fatPot = false;
 
@@ -162,11 +158,10 @@ public class DadosActivity extends AppCompatActivity
                 tens = false;
                 pot = true;
                 corre = false;
-                potRe = false;
                 potAl = false;
                 fatPot = false;
 
-                graph.setTitle("Potência Elétrica(W)");
+                graph.setTitle("Potência Ativa(W)");
                // viewport.setMaxY(2000);
             }
         });
@@ -177,26 +172,10 @@ public class DadosActivity extends AppCompatActivity
                 tens = false;
                 pot = false;
                 corre = false;
-                potRe = false;
                 potAl = true;
                 fatPot = false;
 
-                graph.setTitle("Potência Alternada");
-                // viewport.setMaxY(2000);
-            }
-        });
-        potenciaRe.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                com = false;
-                tens = false;
-                pot = false;
-                corre = false;
-                potRe = true;
-                potAl = false;
-                fatPot = false;
-
-                graph.setTitle("Potência Reativa");
+                graph.setTitle("Potência Aparente");
                 // viewport.setMaxY(2000);
             }
         });
@@ -207,7 +186,6 @@ public class DadosActivity extends AppCompatActivity
                 tens = false;
                 pot = false;
                 corre = false;
-                potRe = false;
                 potAl = false;
                 fatPot = true;
 
@@ -243,7 +221,6 @@ public class DadosActivity extends AppCompatActivity
                     getPotencia();
                     getPotenciaAlternada();
                     getFatorPotencia();
-                    getPotenciaRelativa();
                     getTensao();
 
 
@@ -359,35 +336,6 @@ public class DadosActivity extends AppCompatActivity
 
     }
 
-    private void getPotenciaRelativa(){
-
-        correnteDispositivo = ConexaoDispositivo.PegaDados(nomeAparelho,"potenciaRela");
-
-        ValueEventListener valueEventListener = correnteDispositivo.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                // This method is called once with the initial value and again
-                // whenever data at this location is updated.
-                Double potenciaEletrica = dataSnapshot.getValue(Double.class);
-                potenciaRela = potenciaEletrica;
-
-                Log.d("file", "Value is: " + potenciaEletrica);
-
-                potenciaRe.setText(String.format("%s", potenciaEletrica));
-                potenciaRe.setTextColor(Color.BLACK);
-
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
-                // Failed to read value
-                Log.w("file", "Failed to read value.", databaseError.toException());
-            }
-
-        });
-
-    }
-
     private void getFatorPotencia(){
 
         correnteDispositivo = ConexaoDispositivo.PegaDados(nomeAparelho,"fatorPotencia");
@@ -473,10 +421,6 @@ public class DadosActivity extends AppCompatActivity
         }else if(pot){
 
             series.appendData(new DataPoint(lastX++, potenciaEle), true, 10);
-
-        }else if(potRe){
-
-            series.appendData(new DataPoint(lastX++, potenciaRela), true, 10);
 
         }else if(potAl){
 
