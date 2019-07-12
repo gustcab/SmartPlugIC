@@ -216,25 +216,42 @@ public class DadosActivity extends AppCompatActivity
                     gasto.setText("" + CalculoConsumo().toString());
                     gasto.setTextColor(Color.BLACK);
                     getCorrente();
+                    // sleep to slow down the add of entries
+                    intervalo(100);
                     verificaCorrente();
+                    // sleep to slow down the add of entries
+                    intervalo(100);
 
                     getPotencia();
+                    // sleep to slow down the add of entries
+                    intervalo(100);
                     getPotenciaAlternada();
+                    // sleep to slow down the add of entries
+                    intervalo(100);
                     getFatorPotencia();
+                    // sleep to slow down the add of entries
+                    intervalo(100);
                     getTensao();
 
 
                     // sleep to slow down the add of entries
-                    try {
-                        Thread.sleep(1000);
-                    } catch (InterruptedException e) {
-                        // manage error ...
+                    intervalo(1000);
 
-                    }
 
                 }
             }
         }).start();
+    }
+
+    private void intervalo(int tempo){
+
+        try {
+            Thread.sleep(tempo);
+        } catch (InterruptedException e) {
+            // manage error ...
+
+        }
+
     }
 
     private void getCorrente(){
@@ -413,29 +430,43 @@ public class DadosActivity extends AppCompatActivity
         if(corre){
 
             series.appendData(new DataPoint(lastX++, correnteEle), true, 10);
+            // sleep to slow down the add of entries
+            intervalo(1000);
 
         }else if(tens){
 
             series.appendData(new DataPoint(lastX++, tensaoEle), true, 10);
+            // sleep to slow down the add of entries
+            intervalo(1000);
 
         }else if(pot){
 
             series.appendData(new DataPoint(lastX++, potenciaEle), true, 10);
+            // sleep to slow down the add of entries
+            intervalo(1000);
 
         }else if(potAl){
 
             series.appendData(new DataPoint(lastX++, potenciaAlter), true, 10);
+            // sleep to slow down the add of entries
+            intervalo(1000);
 
         }else if(fatPot){
 
             series.appendData(new DataPoint(lastX++, FatorPot), true, 10);
+            // sleep to slow down the add of entries
+            intervalo(1000);
 
         }else if(com){
 
             series.appendData(new DataPoint(lastX++, consumoHr), true, 10);
+            // sleep to slow down the add of entries
+            intervalo(1000);
 
         }else{
             series.appendData(new DataPoint(lastX++, correnteEle), true, 10);
+            // sleep to slow down the add of entries
+            intervalo(1000);
         }
 
 

@@ -97,13 +97,13 @@ public class HomeActivity extends AppCompatActivity
             public void onClick(View v) {
 
 
-                if (getStatus()) {
+                //if (getStatus()) {
                     Intent intent = new Intent(HomeActivity.this, DadosActivity.class);
                     startActivity(intent);
-                } else {
+                /*} else {
                     Toast.makeText(HomeActivity.this, "Nenhum aparelho conectado no momento. " +
                             "Certifique-se de que sua rede de internet esteja ligada!", Toast.LENGTH_LONG).show();
-                }
+                }*/
 
             }
         });
@@ -126,7 +126,7 @@ public class HomeActivity extends AppCompatActivity
     }
     private void PowerAparelho()
     {
-        if(getStatus()) {
+        //if(getStatus()) {
             if (getPower()) {
 
                 Drawable drawable = getResources().getDrawable(R.drawable.ic_light_off);
@@ -151,12 +151,12 @@ public class HomeActivity extends AppCompatActivity
                 Toast.makeText(HomeActivity.this, "Aparelho ligado", Toast.LENGTH_LONG).show();
 
             }
-        }
+       /* }
         else
         {
             Toast.makeText(HomeActivity.this, "Nenhum aparelho Ativado no momento.", Toast.LENGTH_LONG).show();
             Toast.makeText(HomeActivity.this, "Verifique o status do dispositivo ou aguarde um momento e tente mais uma vez", Toast.LENGTH_LONG).show();
-        }
+        }*/
 
     }
 
