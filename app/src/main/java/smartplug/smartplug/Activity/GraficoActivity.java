@@ -273,15 +273,15 @@ public class GraficoActivity extends AppCompatActivity {
 
     private void pegaDados(){
         getPotencia();
-         intervalo(100);
+
         getPotenciaAlternada();
-         intervalo(100);
+
         getFatorPotencia();
-         intervalo(100);
+
         getCorrente();
-          intervalo(100);
+
         getTensao();
-          intervalo(100);
+
         consumoHr = CalculoConsumo();
     }
 
@@ -417,36 +417,36 @@ public class GraficoActivity extends AppCompatActivity {
         if(corre){
 
             series.appendData(new DataPoint(lastX++, correnteEle), true, 10);
-            intervalo(1000);
+            //intervalo(1000);
 
         }else if(tens){
 
             series.appendData(new DataPoint(lastX++, tensaoEle), true, 10);
-            intervalo(1000);
+            //intervalo(1000);
 
         }else if(potAl){
 
             series.appendData(new DataPoint(lastX++, potenciaAlter), true, 10);
-            intervalo(1000);
+            //intervalo(1000);
 
         }else if(fatPot){
 
             series.appendData(new DataPoint(lastX++, FatorPot), true, 10);
-            intervalo(1000);
+            //intervalo(1000);
 
         }else if(pot){
 
             series.appendData(new DataPoint(lastX++, potenciaEle), true, 10);
-            intervalo(1000);
+            //intervalo(1000);
 
         }else if(com){
 
             series.appendData(new DataPoint(lastX++, consumoHr), true, 10);
-            intervalo(1000);
+            //intervalo(1000);
 
         }else{
             series.appendData(new DataPoint(lastX++, correnteEle), true, 10);
-            intervalo(1000);
+            //intervalo(1000);
         }
 
 
