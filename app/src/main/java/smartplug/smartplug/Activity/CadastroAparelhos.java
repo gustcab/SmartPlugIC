@@ -62,7 +62,7 @@ public class CadastroAparelhos extends AppCompatActivity {
 
         try{
 
-            firebase = ConfiguracaoFirebase.getFirebase().child("addaparelho");
+            firebase = ConfiguracaoFirebase.getFirebase();
             firebase.child(aparelhos.getNome()).setValue(aparelhos);
             Toast.makeText(CadastroAparelhos.this, "Aparelho cadastrado com sucesso", Toast.LENGTH_LONG).show();
 

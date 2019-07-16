@@ -18,7 +18,7 @@ public class ConexaoDispositivo{
 
     public static ConexaoDispositivo  AtivaAparelhoFirebase(String aparelho){
 
-        deviceStatus = ConfiguracaoFirebase.getFirebase().child("addaparelho").child(aparelho).child("status");
+        deviceStatus = ConfiguracaoFirebase.getFirebase().child(aparelho).child("status");
         deviceStatus.setValue("Ativado");
 
         return null;
@@ -27,7 +27,7 @@ public class ConexaoDispositivo{
 
     public static ConexaoDispositivo DesativaAparelhoFirebase(String aparelho){
 
-        deviceStatus = ConfiguracaoFirebase.getFirebase().child("addaparelho").child(aparelho).child("status");
+        deviceStatus = ConfiguracaoFirebase.getFirebase().child(aparelho).child("status");
         deviceStatus.setValue("Desativado");
 
         return null;
@@ -35,14 +35,14 @@ public class ConexaoDispositivo{
 
     public static void LigaAparelho(String aparelho){
 
-        devicePower = ConfiguracaoFirebase.getFirebase().child("addaparelho").child(aparelho).child("power");
+        devicePower = ConfiguracaoFirebase.getFirebase().child(aparelho).child("power");
         devicePower.setValue("ON");
 
     }
 
     public static void DesligaAparelho(String aparelho){
 
-        devicePower = ConfiguracaoFirebase.getFirebase().child("addaparelho").child(aparelho).child("power");
+        devicePower = ConfiguracaoFirebase.getFirebase().child(aparelho).child("power");
         devicePower.setValue("OFF");
 
 
@@ -50,7 +50,7 @@ public class ConexaoDispositivo{
 
     public static DatabaseReference PegaDados(String aparelho,String dado) {
 
-        deviceDados = ConfiguracaoFirebase.getFirebase().child("addaparelho").child(aparelho).child(dado);
+        deviceDados = ConfiguracaoFirebase.getFirebase().child(aparelho).child(dado);
 
         return deviceDados;
 
