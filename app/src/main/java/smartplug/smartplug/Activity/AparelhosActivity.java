@@ -53,7 +53,7 @@ public class AparelhosActivity extends AppCompatActivity {
 
         listView.setAdapter(adapter);
 
-        firebase = ConfiguracaoFirebase.getFirebase().child("addaparelho");
+        firebase = ConfiguracaoFirebase.getFirebase();
 
 
        valueEventListenerProdutos = new ValueEventListener() {

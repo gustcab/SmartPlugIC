@@ -46,7 +46,7 @@ public class ProdutosAdapter extends ArrayAdapter<Aparelhos> {
             txtStatus.setTextSize(20);
 
             txtNome.setText("Aparelho: " + produto2.getNome());
-            txtIp.setText("IP: " + produto2.getIp());
+            txtIp.setText("Power: " + produto2.getPower());
             txtStatus.setText("Status: " + produto2.getStatus());
 
         }
