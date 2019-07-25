@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".Activity.SobreActivity"
+    android:background="@drawable/fundo_roxo_logos2">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <TextView
+            android:id="@+id/textoSobre"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:layout_margin="0dp"
+            android:paddingTop="60sp"
+            android:textColor="#000000"
+            android:text="Projeto de Iniciação Científica voltado para o monitoramento e controle de uma tomada inteligente"
+            android:textSize="30sp" />
+
+        <TextView
+            android:id="@+id/campus"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignBottom="@+id/textoSobre"
+            android:layout_marginBottom="-53dp"
+            android:text=" Faculdade de Engenharia Bauru (FEB), UNESP/Bauru\n Departamento de Engenharia Elétrica"
+            android:textColor="#000000"
+            android:textSize="13sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/aluno"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignBottom="@+id/textoSobre"
+            android:layout_marginBottom="-193dp"
+            android:text="Aluno Bolsista\n
+                 Gustavo Motta Cabello"
+            android:textColor="#969696"
+            android:textSize="17sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignBottom="@+id/aluno"
+            android:layout_marginBottom="-56dp"
+            android:text="Professor Orientador \n
+            Rudolf Ribeiro Riehl"
+            android:textColor="#8B8B8B"
+            android:textSize="17sp"
+            android:textStyle="bold" />
+
+    </RelativeLayout>
+
+</LinearLayout>

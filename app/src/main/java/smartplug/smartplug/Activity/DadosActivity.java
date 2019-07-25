@@ -513,7 +513,7 @@ public class DadosActivity extends AppCompatActivity
 
         } else if (id == R.id.nav_sobre_dados) {
 
-            alertaDeslogar();
+            abreSobre();
 
         } else if (id == R.id.nav_condiguracao_dados) {
             abreConfiguracao();
@@ -537,6 +537,13 @@ public class DadosActivity extends AppCompatActivity
 
         Intent intent = new Intent(DadosActivity.this, AparelhosActivity.class);
         startActivity(intent);
+
+    }
+
+   private void abreSobre(){
+
+       Intent intent = new Intent(DadosActivity.this, SobreActivity.class);
+       startActivity(intent);
 
     }
 

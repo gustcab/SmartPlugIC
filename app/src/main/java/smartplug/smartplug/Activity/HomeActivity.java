@@ -225,6 +225,13 @@ public class HomeActivity extends AppCompatActivity
 
     }
 
+    private void abreSobre(){
+
+        Intent intent = new Intent(HomeActivity.this, SobreActivity.class);
+        startActivity(intent);
+
+    }
+
     private void deslogaUsuario(){
         usuarioFirebase.signOut();
         Intent intent = new Intent(HomeActivity.this, MainActivity.class);
@@ -332,10 +339,7 @@ public class HomeActivity extends AppCompatActivity
 
         } else if (id == R.id.nav_sobre2) {
 
-            String url = "http://localhost/sobreProjeto.php";
-            Intent i = new Intent(Intent.ACTION_VIEW);
-            i.setData(Uri.parse(url));
-            startActivity(i);
+            abreSobre();
 
         } else if (id == R.id.nav_condiguracao2) {
 
