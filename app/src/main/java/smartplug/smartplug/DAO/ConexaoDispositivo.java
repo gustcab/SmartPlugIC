@@ -33,17 +33,30 @@ public class ConexaoDispositivo{
         return null;
     }
 
-    public static void LigaAparelho(String aparelho){
+    public static boolean LigaAparelho(String aparelho) {
 
-        devicePower = ConfiguracaoFirebase.getFirebase().child(aparelho).child("power");
-        devicePower.setValue("ON");
+        try {
 
+            devicePower = ConfiguracaoFirebase.getFirebase().child(aparelho).child("power");
+            devicePower.setValue("ON");
+            return true;
+
+        } catch (Exception error) {
+            return false;
+        }
     }
 
-    public static void DesligaAparelho(String aparelho){
+    public static boolean DesligaAparelho(String aparelho){
 
-        devicePower = ConfiguracaoFirebase.getFirebase().child(aparelho).child("power");
-        devicePower.setValue("OFF");
+
+        try {
+            devicePower = ConfiguracaoFirebase.getFirebase().child(aparelho).child("power");
+            devicePower.setValue("OFF");
+            return true;
+        }catch (Exception error)
+        {
+            return false;
+        }
 
 
     }

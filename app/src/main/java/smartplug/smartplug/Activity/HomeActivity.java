@@ -1,8 +1,10 @@
 package smartplug.smartplug.Activity;
 
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.drawable.Drawable;
+import android.net.ConnectivityManager;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -70,6 +72,7 @@ public class HomeActivity extends AppCompatActivity
         forca = findViewById(R.id.forca);
         guest = findViewById(R.id.txtguest_home);
 
+
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
@@ -98,8 +101,14 @@ public class HomeActivity extends AppCompatActivity
 
 
                 //if (getStatus()) {
+                if(verificaConexao()) {
                     Intent intent = new Intent(HomeActivity.this, DadosActivity.class);
                     startActivity(intent);
+                }else{
+
+                    Toast.makeText(HomeActivity.this, "Sem Conexão com a internet", Toast.LENGTH_LONG).show();
+
+                }
                 /*} else {
                     Toast.makeText(HomeActivity.this, "Nenhum aparelho conectado no momento. " +
                             "Certifique-se de que sua rede de internet esteja ligada!", Toast.LENGTH_LONG).show();
@@ -112,7 +121,15 @@ public class HomeActivity extends AppCompatActivity
             @Override
             public void onClick(View v) {
 
-               PowerAparelho();
+              if(verificaConexao())
+              {
+                  PowerAparelho();
+              }else{
+
+                  Toast.makeText(HomeActivity.this, "Sem Conexão com a internet", Toast.LENGTH_LONG).show();
+
+              }
+
 
             }
         });
@@ -129,26 +146,33 @@ public class HomeActivity extends AppCompatActivity
         //if(getStatus()) {
             if (getPower()) {
 
-                Drawable drawable = getResources().getDrawable(R.drawable.ic_light_off);
-                imglight.setImageDrawable(drawable);
-                forca.setText(getString(R.string.desligado));
-
-                ConexaoDispositivo.DesligaAparelho(nomeAparelho);
+               if(ConexaoDispositivo.DesligaAparelho(nomeAparelho))
+               {
+                   Drawable drawable = getResources().getDrawable(R.drawable.ic_light_off);
+                   imglight.setImageDrawable(drawable);
+                   forca.setText(getString(R.string.desligado));
+                   Toast.makeText(HomeActivity.this, "Aparelho desligado", Toast.LENGTH_LONG).show();
+               }else{
+                   Toast.makeText(HomeActivity.this, "Erro, verifique sua conexão com a intenet", Toast.LENGTH_LONG).show();
+               }
                 //    statusDispositivo = ConexaoDispositivo.DesativaAparelhoFirebase(nomeAparelho);
-
-                Toast.makeText(HomeActivity.this, "Aparelho desligado", Toast.LENGTH_LONG).show();
 
             } else {
 
-                Drawable drawable = getResources().getDrawable(R.drawable.light);
-                imglight.setImageDrawable(drawable);
+                if(ConexaoDispositivo.LigaAparelho(nomeAparelho))
+                {
+                    Drawable drawable = getResources().getDrawable(R.drawable.light);
+                    imglight.setImageDrawable(drawable);
 
-                forca.setText(getString(R.string.ligado));
+                    forca.setText(getString(R.string.ligado));
 
-                ConexaoDispositivo.LigaAparelho(nomeAparelho);
+                    Toast.makeText(HomeActivity.this, "Aparelho ligado", Toast.LENGTH_LONG).show();
+                }else{
+                    Toast.makeText(HomeActivity.this, "Erro, verifique sua conexão com a intenet", Toast.LENGTH_LONG).show();
+                }
                 // statusDispositivo =  ConexaoDispositivo.AtivaAparelhoFirebase(nomeAparelho);
 
-                Toast.makeText(HomeActivity.this, "Aparelho ligado", Toast.LENGTH_LONG).show();
+
 
             }
        /* }
@@ -180,6 +204,24 @@ public class HomeActivity extends AppCompatActivity
 
         return status.equals("Ativado");
 
+    }
+
+    public boolean verificaConexao() {
+        boolean conectado = false;
+        ConnectivityManager conectivtyManager = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+
+        if (conectivtyManager.getActiveNetworkInfo() != null) {
+
+            if (conectivtyManager.getNetworkInfo(ConnectivityManager.TYPE_WIFI).isConnected()) {
+                conectado = true;
+            }
+
+            //Verifica se tem internet móvel
+            if (conectivtyManager.getNetworkInfo(ConnectivityManager.TYPE_MOBILE).isConnected()) {
+                conectado = true;
+            }
+        }
+        return conectado;
     }
 
     private boolean getPower(){
