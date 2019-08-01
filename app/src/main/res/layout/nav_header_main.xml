@@ -27,10 +27,4 @@
         android:text="Desenvolvedor: Gustavo Motta Cabello"
         android:textAppearance="@style/TextAppearance.AppCompat.Body1" />
 
-    <TextView
-        android:id="@+id/textView"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Contato: cabellogustavo01@gmail.com" />
-
 </LinearLayout>

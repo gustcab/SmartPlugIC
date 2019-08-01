@@ -5,7 +5,6 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.net.ConnectivityManager;
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
@@ -42,22 +41,17 @@ import static android.support.constraint.Constraints.TAG;
 public class HomeActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
     private FirebaseAuth usuarioFirebase;
-    private DatabaseReference mDatabase;
-    private DatabaseReference statusDispositivo, nomeUsuario;
-    private ConexaoDispositivo powerDispositivo;
+    private DatabaseReference statusDispositivo;
 
-    private EditText inputTempo;
     private Button btnVerProduto;
     private FloatingActionButton imgAddAparelho;
     private ImageView imglight, imgdados;
-    private TextView forca, dados, guest, txtLigaDesliga;
+    private TextView forca;
     private AlertDialog alerta;
-    private String status = "", power = " ", nomeUser = " ", nomeAparelho = "SmartPlug";
+    private String status = "", power = " ", nomeAparelho = "SmartPlug";
 
 
     FirebaseDatabase database = FirebaseDatabase.getInstance();
-    DatabaseReference reference = database.getReference();
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -70,7 +64,6 @@ public class HomeActivity extends AppCompatActivity
         imglight = findViewById(R.id.imglight);
         imgdados = findViewById(R.id.imgDados);
         forca = findViewById(R.id.forca);
-        guest = findViewById(R.id.txtguest_home);
 
 
         Toolbar toolbar = findViewById(R.id.toolbar);
@@ -85,11 +78,35 @@ public class HomeActivity extends AppCompatActivity
         NavigationView navigationView = findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
+        if(getPower()){
+
+            Drawable drawable = getResources().getDrawable(R.drawable.light);
+            imglight.setImageDrawable(drawable);
+
+            forca.setText(getString(R.string.ligado));
+
+            Toast.makeText(HomeActivity.this, "Aparelho ligado", Toast.LENGTH_LONG).show();
+
+        }else{
+
+            Drawable drawable = getResources().getDrawable(R.drawable.ic_light_off);
+            imglight.setImageDrawable(drawable);
+            forca.setText(getString(R.string.desligado));
+            Toast.makeText(HomeActivity.this, "Aparelho desligado", Toast.LENGTH_LONG).show();
+
+        }
+
 
         imgAddAparelho.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                addAparelho();
+
+                if(verificaConexao()) {
+                    addAparelho();
+                }else{
+                    Toast.makeText(HomeActivity.this, "Sem Conexão com a internet", Toast.LENGTH_LONG).show();
+
+                }
 
             }
         });
@@ -137,7 +154,13 @@ public class HomeActivity extends AppCompatActivity
         btnVerProduto.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                verAparelho();
+
+                if(verificaConexao()) {
+                    verAparelho();
+                }else{
+                    Toast.makeText(HomeActivity.this, "Sem Conexão com a internet", Toast.LENGTH_LONG).show();
+
+                }
             }
         });
     }
@@ -241,8 +264,16 @@ public class HomeActivity extends AppCompatActivity
             }
         });
 
+      if(power == "ON")
+      {
+          return  true;
+      }else if (power == "OFF"){
 
-        return power.equals("ON");
+          return false;
+
+      }else{
+          return true;
+      }
 
     }
 

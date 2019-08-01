@@ -98,7 +98,7 @@ public class DadosActivity extends AppCompatActivity
         final Viewport viewport = graph.getViewport();
         viewport.setYAxisBoundsManual(true);
         viewport.setMinY(0);
-        viewport.setMaxY(200);
+        viewport.setMaxY(50);
         viewport.setScrollable(true);
 
         ampliar = findViewById(R.id.ampliar_grafico);
