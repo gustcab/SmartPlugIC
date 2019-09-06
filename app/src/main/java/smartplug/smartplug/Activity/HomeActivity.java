@@ -116,7 +116,6 @@ public class HomeActivity extends AppCompatActivity
             @Override
             public void onClick(View v) {
 
-
                 //if (getStatus()) {
                 if(verificaConexao()) {
                     Intent intent = new Intent(HomeActivity.this, DadosActivity.class);
