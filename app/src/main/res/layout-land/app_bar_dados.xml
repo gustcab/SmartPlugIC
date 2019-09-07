@@ -26,10 +26,10 @@
 
     <android.support.design.widget.FloatingActionButton
         android:id="@+id/ampliar_grafico"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="230dp"
+        android:layout_width="44dp"
+        android:layout_height="42dp"
         android:layout_gravity="end"
+        android:layout_marginTop="230dp"
         android:layout_marginEnd="10dp"
         android:clickable="true"
         android:focusable="true"
