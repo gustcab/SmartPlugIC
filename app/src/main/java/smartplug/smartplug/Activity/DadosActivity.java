@@ -408,7 +408,7 @@ public class DadosActivity extends AppCompatActivity
 
     private Double CalculoConsumo(){
 
-        double potencia = potenciaEle;
+        double potencia = potenciaAlter;
 
         double Consumo = (potencia * 24) / 1000;
         consumoHr = Consumo;
