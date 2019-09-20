@@ -174,7 +174,7 @@
                     <TextView
                         android:id="@+id/txtLabel_Potencia"
                         android:gravity="center"
-                        android:text="Potência Ativa(W)"
+                        android:text="Potência Ativa(KW)"
                         android:textSize="17sp"
                         android:textColor="#000000"
                         android:textStyle="bold"

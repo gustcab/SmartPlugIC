@@ -30,6 +30,7 @@ import com.jjoe64.graphview.Viewport;
 import com.jjoe64.graphview.series.DataPoint;
 import com.jjoe64.graphview.series.LineGraphSeries;
 
+import java.text.DecimalFormat;
 import java.util.Random;
 
 import smartplug.smartplug.DAO.ConexaoDispositivo;
@@ -416,50 +417,60 @@ public class DadosActivity extends AppCompatActivity
         return Consumo;
     }
 
+    DecimalFormat formato = new DecimalFormat("#.###");
+
+
     // add random data to graph
     private void addEntry(){
+        double corrente = Double.valueOf(formato.format(correnteEle));
+        double tensao = Double.valueOf(formato.format(tensaoEle));
+        double aparente = Double.valueOf(formato.format(potenciaEle));
+        double alternada = Double.valueOf(formato.format(potenciaAlter));
+        double consumo = Double.valueOf(formato.format(consumoHr));
+        double fator = Double.valueOf(formato.format(FatorPot));
+
 
         // here we choose to display max 10 points on the viewport and we scroll to end
        // series.appendData(new DataPoint(lastX++, RANDOM.nextDouble() * 10d), true, 10);
 
         if(corre){
 
-            series.appendData(new DataPoint(lastX++, correnteEle), true, 10);
+            series.appendData(new DataPoint(lastX++, corrente), true, 10);
             // sleep to slow down the add of entries
             //intervalo(1000);
 
         }else if(tens){
 
-            series.appendData(new DataPoint(lastX++, tensaoEle), true, 10);
+            series.appendData(new DataPoint(lastX++, tensao), true, 10);
             // sleep to slow down the add of entries
             //intervalo(1000);
 
         }else if(pot){
 
-            series.appendData(new DataPoint(lastX++, potenciaEle), true, 10);
+            series.appendData(new DataPoint(lastX++, aparente), true, 10);
             // sleep to slow down the add of entries
             //intervalo(1000);
 
         }else if(potAl){
 
-            series.appendData(new DataPoint(lastX++, potenciaAlter), true, 10);
+            series.appendData(new DataPoint(lastX++, alternada), true, 10);
             // sleep to slow down the add of entries
             //intervalo(1000);
 
         }else if(fatPot){
 
-            series.appendData(new DataPoint(lastX++, FatorPot), true, 10);
+            series.appendData(new DataPoint(lastX++,fator), true, 10);
             // sleep to slow down the add of entries
             //intervalo(1000);
 
         }else if(com){
 
-            series.appendData(new DataPoint(lastX++, consumoHr), true, 10);
+            series.appendData(new DataPoint(lastX++, consumo), true, 10);
             // sleep to slow down the add of entries
             //intervalo(1000);
 
         }else{
-            series.appendData(new DataPoint(lastX++, correnteEle), true, 10);
+            series.appendData(new DataPoint(lastX++,corrente), true, 10);
             // sleep to slow down the add of entries
             //intervalo(1000);
         }
